@@ -354,17 +354,6 @@ small a{color:var(--accent2)}
     </div>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="card">
-        <div class="card-title">API Access</div>
-        <div class="form-group">
-          <label>Anthropic API Key</label>
-          <input type="password" id="p-key" placeholder="sk-ant-api03-..." oninput="localStorage.setItem('kp_api_key',this.value);setKeyStatus(!!this.value)">
-          <small style="color:var(--text3)">Хранится только на этом устройстве. Вводи один раз — запомнится навсегда.</small>
-          <div class="key-status">
-            <div class="key-dot" id="key-dot"></div>
-            <span class="key-label" id="key-label">Not configured</span>
-          </div>
-          <small>Key stored locally in your browser only.</small>
-        </div>
         <button class="btn btn-primary" onclick="saveProfile()" style="width:100%;justify-content:center">
           SAVE PROFILE
         </button>
@@ -384,10 +373,14 @@ small a{color:var(--accent2)}
   <!-- API KEY -->
   <div class="card" style="margin-bottom:16px">
     <div class="card-title">API Access</div>
-    <div class="form-group" style="margin-bottom:0">
-      <label>Anthropic API Key <span class="key-dot" id="key-dot2"></span></label>
+    <div class="form-group" style="margin-bottom:10px">
+      <label>Anthropic API Key</label>
       <input type="password" id="p-key2" placeholder="sk-ant-api03-..." oninput="syncApiKey(this.value)">
-      <small style="color:var(--text3)">Хранится только на этом устройстве. Вводи один раз — запомнится навсегда.</small>
+      <small style="color:var(--text3)">Хранится только на этом устройстве. Сохраняется автоматически при вводе.</small>
+    </div>
+    <div class="key-status">
+      <div class="key-dot" id="key-dot"></div>
+      <span class="key-label" id="key-label">Not configured</span>
     </div>
   </div>
 
@@ -449,6 +442,12 @@ small a{color:var(--accent2)}
         <textarea id="upload-text" style="min-height:120px;font-size:12px" placeholder="Вставь текст сюда — транскрипт интервью, список книг, или скопируй содержимое .doc файла..."></textarea>
       </div>
       <button class="btn btn-primary" id="upload-btn" onclick="processUpload()" style="width:100%;justify-content:center">ОБРАБОТАТЬ И ДОБАВИТЬ В БАЗУ</button>
+      <div style="text-align:center;margin-top:8px">
+        <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:1px">
+          📎 ЗАГРУЗИТЬ ФАЙЛ (.doc .docx .pdf .txt)
+          <input type="file" id="upload-file-input" accept=".doc,.docx,.pdf,.txt" style="display:none" onchange="handleFileUpload(this)">
+        </label>
+      </div>
       <div class="error" id="upload-error" style="margin-top:8px"></div>
     </div>
 
@@ -736,6 +735,7 @@ small a{color:var(--accent2)}
 
 <div id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>
 // ============================================================
 // STATE
@@ -776,8 +776,12 @@ function loadProfile(){
   if(profile.goal) document.getElementById('p-goal').value=profile.goal;
   if(profile.criteria) document.getElementById('p-criteria').value=profile.criteria;
   if(profile.focus) document.getElementById('p-focus').value=profile.focus;
-  if(profile.key){
-    document.getElementById('p-key').value=profile.key;
+  // Load API key into Settings field
+  const savedKey = localStorage.getItem('kp_api_key') || profile.key || '';
+  if(savedKey){
+    const k2 = document.getElementById('p-key2');
+    if(k2) k2.value = savedKey;
+    profile.key = savedKey;
     setKeyStatus(true);
   }
 }
@@ -789,7 +793,7 @@ function saveProfile(){
     goal: document.getElementById('p-goal').value,
     criteria: document.getElementById('p-criteria').value,
     focus: document.getElementById('p-focus').value,
-    key: document.getElementById('p-key').value
+    key: localStorage.getItem('kp_api_key') || profile.key || ''
   };
   localStorage.setItem('kp_profile',JSON.stringify(profile));
   localStorage.setItem('kp_api_key', profile.key||'');
@@ -935,7 +939,7 @@ async function analyzeTask(){
   const taskText = document.getElementById('task-input').value.trim();
   if(!taskText){showError('Write a task first');return;}
   
-  const key = profile.key || document.getElementById('p-key').value;
+  const key = profile.key || localStorage.getItem('kp_api_key') || '';
   if(!key){showError('Add your API key in Profile first');return;}
 
   const btn = document.getElementById('analyze-btn');
@@ -1346,8 +1350,8 @@ function initSync(){
   const savedKey = localStorage.getItem('kp_api_key');
   if(savedKey && !profile.key){
     profile.key = savedKey;
-    const keyEl = document.getElementById('p-key');
-    if(keyEl) keyEl.value = savedKey;
+    const k2 = document.getElementById('p-key2');
+    if(k2) k2.value = savedKey;
     setKeyStatus(true);
   }
   // Check if running from file:// — sync won't work
@@ -1377,7 +1381,7 @@ function pdReset(){
 async function pdStep1(){
   const projects = document.getElementById('pd-projects').value.trim();
   if(!projects){document.getElementById('pd-error').textContent='Введи хотя бы один проект';document.getElementById('pd-error').style.display='block';return;}
-  const key = profile.key || document.getElementById('p-key').value;
+  const key = profile.key || localStorage.getItem('kp_api_key') || '';
   if(!key){document.getElementById('pd-error').textContent='Сначала добавь API ключ выше';document.getElementById('pd-error').style.display='block';return;}
 
   const btn = document.getElementById('pd-btn1');
@@ -1424,7 +1428,7 @@ ${MENTOR_CONTEXT}
 async function pdStep2(){
   const answers = document.getElementById('pd-answers').value.trim();
   if(!answers){toast('Напиши ответы на вопросы');return;}
-  const key = profile.key || document.getElementById('p-key').value;
+  const key = profile.key || localStorage.getItem('kp_api_key') || '';
   const btn = document.getElementById('pd-btn2');
   btn.innerHTML='<div class="spinner" style="border-top-color:#000"></div> ДУМАЮ...';
   btn.disabled=true;
@@ -1747,13 +1751,7 @@ function renderToday(){
 function syncApiKey(val){
   localStorage.setItem('kp_api_key', val);
   profile.key = val;
-  // Mirror to profile p-key if it exists
-  const k = document.getElementById('p-key');
-  if(k && k.value !== val) k.value = val;
   setKeyStatus(!!val);
-  // Also update key-dot2
-  const d2 = document.getElementById('key-dot2');
-  if(d2) d2.className='key-dot'+(val?' ok':'');
 }
 
 // ============================================================
@@ -1772,6 +1770,43 @@ function setUploadType(type){
   document.getElementById('upload-text').placeholder = type==='interview'
     ? 'Вставь текст транскрипта...\n\nПример:\nJohn: How did you get rich?\nMike: I started with...'
     : 'Брайан Трейси — Съешьте лягушку\nРоберт Кийосаки — Богатый папа бедный папа\n...';
+}
+
+async function handleFileUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const textarea = document.getElementById('upload-text');
+  const errEl = document.getElementById('upload-error');
+  errEl.style.display='none';
+
+  try {
+    if(ext==='txt'){
+      const text = await file.text();
+      textarea.value = text;
+      toast('Файл загружен — '+file.name);
+    } else if(ext==='docx'){
+      if(typeof mammoth === 'undefined'){
+        errEl.textContent='Библиотека загружается, попробуй снова через секунду';
+        errEl.style.display='block'; return;
+      }
+      const buf = await file.arrayBuffer();
+      const result = await mammoth.extractRawValue({arrayBuffer: buf});
+      textarea.value = result.value;
+      toast('Файл загружен — '+file.name);
+    } else if(ext==='pdf'){
+      errEl.textContent='PDF: скопируй текст из файла вручную и вставь в поле ниже';
+      errEl.style.display='block';
+    } else if(ext==='doc'){
+      errEl.textContent='.doc (старый формат): пересохрани как .docx и загрузи снова';
+      errEl.style.display='block';
+    }
+  } catch(e){
+    errEl.textContent='Ошибка чтения файла: '+e.message;
+    errEl.style.display='block';
+  }
+  // Reset input so same file can be re-selected
+  input.value='';
 }
 
 function resetUpload(){
@@ -1916,14 +1951,6 @@ renderMentorChips();
 renderCustomMentors();
 updateExportCount();
 initSync();
-// Sync key-dot2
-const savedKey2 = localStorage.getItem('kp_api_key');
-if(savedKey2){
-  const el2 = document.getElementById('p-key2');
-  if(el2) el2.value = savedKey2;
-  const d2 = document.getElementById('key-dot2');
-  if(d2) d2.className='key-dot ok';
-}
 
 // Pre-fill with Alexis's profile if empty
 if(!profile.name){
