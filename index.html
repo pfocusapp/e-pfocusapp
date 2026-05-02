@@ -298,6 +298,7 @@ small a{color:var(--accent2)}
     <button class="tab" onclick="showTab('matrix')">Matrix</button>
     <button class="tab" onclick="showTab('kanban')">Kanban</button>
     <button class="tab" onclick="showTab('today')" id="tab-today">Today ✦</button>
+    <button class="tab" onclick="showTab('settings')">Settings</button>
   </nav>
 </header>
 
@@ -356,7 +357,8 @@ small a{color:var(--accent2)}
         <div class="card-title">API Access</div>
         <div class="form-group">
           <label>Anthropic API Key</label>
-          <input type="password" id="p-key" placeholder="sk-ant-api03-...">
+          <input type="password" id="p-key" placeholder="sk-ant-api03-..." oninput="localStorage.setItem('kp_api_key',this.value);setKeyStatus(!!this.value)">
+          <small style="color:var(--text3)">Хранится только на этом устройстве. Вводи один раз — запомнится навсегда.</small>
           <div class="key-status">
             <div class="key-dot" id="key-dot"></div>
             <span class="key-label" id="key-label">Not configured</span>
@@ -368,128 +370,173 @@ small a{color:var(--accent2)}
         </button>
         <div id="saved-msg" style="display:none;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// SAVED</div>
       </div>
-      <div class="card">
-        <div class="card-title">Your Mentor Base</div>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">AI will reference these people when analyzing your tasks — their principles, what they'd say about your specific situation.</p>
-        <div class="mentor-grid" id="mentor-chips"></div>
-        <div style="margin-top:8px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// 76 книг + 6 реальных интервью SHK интегрированы</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Данные и экспорт</div>
-        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:14px">Скачай все задачи из системы — для бэкапа, таблицы или списка.</p>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn btn-ghost" onclick="exportJSON()" style="width:100%;justify-content:space-between;padding:12px 16px">
-            <span>📦 Бэкап и перенос</span>
-            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">JSON</span>
-          </button>
-          <button class="btn btn-ghost" onclick="exportCSV()" style="width:100%;justify-content:space-between;padding:12px 16px">
-            <span>📊 Открыть в таблице</span>
-            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">CSV · Excel / Numbers</span>
-          </button>
-          <button class="btn btn-ghost" onclick="exportMarkdown()" style="width:100%;justify-content:space-between;padding:12px 16px">
-            <span>📋 Скопировать как список</span>
-            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">Markdown</span>
-          </button>
-        </div>
-        <div id="export-msg" style="display:none;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// СКОПИРОВАНО</div>
-        <div style="margin-top:10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// <span id="task-count-export">0</span> задач в системе</div>
-      </div>
-      <div class="card" style="border-color:rgba(78,205,196,.3);background:rgba(78,205,196,.03)">
-        <div class="card-title" style="color:var(--teal)">☁ Синхронизация между устройствами</div>
-        <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">Открывай приложение с iPhone, ноутбука, любого браузера — данные везде одинаковые. Введи одинаковый Sync Code на всех устройствах.</p>
+    </div>
+  </div>
+</section>
 
-        <div class="form-group">
-          <label style="color:var(--teal)">Твой Sync Code</label>
-          <div style="display:flex;gap:8px">
-            <input id="sync-code-input" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" style="font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;flex:1;border-color:rgba(78,205,196,.3)" maxlength="19" oninput="this.value=this.value.toUpperCase()">
-            <button class="btn btn-ghost" onclick="generateAndSetCode()" style="white-space:nowrap;border-color:rgba(78,205,196,.3);color:var(--teal)">Создать</button>
-          </div>
-          <small style="color:var(--text3)">Запиши код — он нужен на других устройствах. Если потеряешь, данные останутся в браузере.</small>
-        </div>
+<!-- SETTINGS -->
+<section id="s-settings">
+  <div class="page-head">
+    <div class="page-title">SETTINGS</div>
+    <div class="page-sub">// База знаний, синхронизация, экспорт</div>
+  </div>
 
-        <div style="display:flex;gap:8px;margin-bottom:12px">
-          <button class="btn btn-ghost" onclick="activateSync()" style="flex:1;justify-content:center;border-color:rgba(78,205,196,.3);color:var(--teal)">⟳ Активировать / Загрузить</button>
-          <button class="btn btn-ghost" onclick="syncPush()" style="flex:1;justify-content:center">↑ Отправить в облако</button>
-        </div>
-
-        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px" id="sync-status">// не синхронизировано</div>
-      </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;align-items:flex-start;gap:10px">
-            <span class="badge badge-q1">Q1</span>
-            <span style="font-size:12px;color:var(--text2)">Urgent + Important → Do NOW. Crisis, deadline, opportunity closing</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px">
-            <span class="badge badge-q2">Q2</span>
-            <span style="font-size:12px;color:var(--text2)">Important, not urgent → GOLD ZONE. Strategy, brand building, skill</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px">
-            <span class="badge badge-q3">Q3</span>
-            <span style="font-size:12px;color:var(--text2)">Urgent, not important → Delegate or minimize. Others' priorities</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px">
-            <span class="badge badge-q4">Q4</span>
-            <span style="font-size:12px;color:var(--text2)">Not urgent + not important → Eliminate. Time traps</span>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:1px;margin-bottom:6px">// KAIZEN PRINCIPLE</div>
-          <p style="font-size:12px;color:var(--text2);font-style:italic;line-height:1.5">"Quadrant 2 is your studio. You rarely live there — but everything important gets built there." — Covey</p>
-        </div>
-      </div>
+  <!-- API KEY -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">API Access</div>
+    <div class="form-group" style="margin-bottom:0">
+      <label>Anthropic API Key <span class="key-dot" id="key-dot2"></span></label>
+      <input type="password" id="p-key2" placeholder="sk-ant-api03-..." oninput="syncApiKey(this.value)">
+      <small style="color:var(--text3)">Хранится только на этом устройстве. Вводи один раз — запомнится навсегда.</small>
     </div>
   </div>
 
-  <!-- PROJECT DISCOVERY — full width -->
-  <div style="margin-top:20px">
-    <div class="card" style="border-color:rgba(232,213,163,.25);background:rgba(232,213,163,.03)">
-      <div class="card-title" style="color:var(--accent)">⚡ Project Discovery — найди свои 2 фокус-проекта</div>
+  <!-- SYNC -->
+  <div class="card" style="margin-bottom:16px;border-color:rgba(78,205,196,.3);background:rgba(78,205,196,.03)">
+    <div class="card-title" style="color:var(--teal)">☁ Синхронизация между устройствами</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">Открывай приложение с iPhone, ноутбука, любого браузера — данные везде одинаковые. Введи одинаковый Sync Code на всех устройствах.</p>
+    <div class="form-group">
+      <label style="color:var(--teal)">Твой Sync Code</label>
+      <div style="display:flex;gap:8px">
+        <input id="sync-code-input" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" style="font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;flex:1;border-color:rgba(78,205,196,.3)" maxlength="19" oninput="this.value=this.value.toUpperCase()">
+        <button class="btn btn-ghost" onclick="generateAndSetCode()" style="white-space:nowrap;border-color:rgba(78,205,196,.3);color:var(--teal)">Создать</button>
+      </div>
+      <small style="color:var(--text3)">Запиши код — он нужен на других устройствах.</small>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn btn-ghost" onclick="activateSync()" style="flex:1;justify-content:center;border-color:rgba(78,205,196,.3);color:var(--teal)">⟳ Загрузить с облака</button>
+      <button class="btn btn-ghost" onclick="syncPush()" style="flex:1;justify-content:center">↑ Отправить в облако</button>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px" id="sync-status">// не синхронизировано</div>
+  </div>
 
-      <!-- Step descriptions -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 1</div>
-          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Список проектов</div>
-          <div style="font-size:11px;color:var(--text2);line-height:1.5">Внеси все свои проекты и идеи — AI задаст уточняющие вопросы по доходу, трекшену, страсти и времени до денег</div>
-        </div>
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 2</div>
-          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Твои ответы</div>
-          <div style="font-size:11px;color:var(--text2);line-height:1.5">Отвечай в свободной форме. AI анализирует через принципы книг и интервью из базы знаний</div>
-        </div>
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 3</div>
-          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Рекомендация</div>
-          <div style="font-size:11px;color:var(--text2);line-height:1.5">Получаешь обоснование через менторов + одна кнопка применяет результат как фокус-проекты</div>
+  <!-- KNOWLEDGE BASE -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">База знаний — Менторы</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">AI использует этих авторов и участников интервью при анализе каждой задачи.</p>
+    <div class="mentor-grid" id="mentor-chips"></div>
+    <div style="margin-top:8px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// 76 книг + 6 реальных интервью SHK интегрированы</div>
+  </div>
+
+  <!-- FILE UPLOAD -->
+  <div class="card" style="margin-bottom:16px;border-color:rgba(232,213,163,.2)">
+    <div class="card-title" style="color:var(--accent)">📂 Загрузить в базу знаний</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:16px">Загрузи .doc/.pdf с транскриптом интервью или список книг — AI прочитает и добавит принципы в базу знаний для анализа задач.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:6px">// ТИП А</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Интервью / транскрипт</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.5">AI извлечёт имена, принципы и цитаты — добавит новых менторов в базу</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:6px">// ТИП Б</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Список книг</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.5">Автор + название — AI найдёт ключевые принципы из своей базы знаний</div>
+      </div>
+    </div>
+
+    <div id="upload-step1">
+      <div class="form-group">
+        <label>Тип контента</label>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button id="upload-type-interview" class="btn btn-primary" onclick="setUploadType('interview')" style="flex:1;justify-content:center;font-size:11px">🎤 Интервью / транскрипт</button>
+          <button id="upload-type-books" class="btn btn-ghost" onclick="setUploadType('books')" style="flex:1;justify-content:center;font-size:11px">📚 Список книг</button>
         </div>
       </div>
-      <div id="pd-step1">
-        <div class="form-group">
-          <label>Все твои проекты и идеи (по одному на строку)</label>
-          <textarea id="pd-projects" style="min-height:120px;font-size:12px" placeholder="Keeori / арт-игрушки для PopMart&#10;Meme Card на 6529.io&#10;Картины + NFT SuperRare&#10;Принты в OMG BCN&#10;Фотография&#10;Metrique (бренд одежды)&#10;Kids App&#10;Focus App&#10;Aphex Kit"></textarea>
-        </div>
-        <button class="btn btn-primary" id="pd-btn1" onclick="pdStep1()" style="width:100%;justify-content:center">АНАЛИЗИРОВАТЬ ПРОЕКТЫ</button>
-        <div class="error" id="pd-error"></div>
+      <div class="form-group">
+        <label id="upload-label">Вставь текст транскрипта или содержимое файла</label>
+        <textarea id="upload-text" style="min-height:120px;font-size:12px" placeholder="Вставь текст сюда — транскрипт интервью, список книг, или скопируй содержимое .doc файла..."></textarea>
       </div>
-      <div id="pd-step2" style="display:none">
-        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// AI ЗАДАЁТ УТОЧНЯЮЩИЕ ВОПРОСЫ</div>
-        <div id="pd-questions" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:14px;font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap"></div>
-        <div class="form-group">
-          <label>Твои ответы (в свободной форме)</label>
-          <textarea id="pd-answers" style="min-height:120px" placeholder="Отвечай по каждому проекту — можно кратко..."></textarea>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-primary" id="pd-btn2" onclick="pdStep2()" style="flex:1;justify-content:center">ПОЛУЧИТЬ РЕКОМЕНДАЦИЮ</button>
-          <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
-        </div>
+      <button class="btn btn-primary" id="upload-btn" onclick="processUpload()" style="width:100%;justify-content:center">ОБРАБОТАТЬ И ДОБАВИТЬ В БАЗУ</button>
+      <div class="error" id="upload-error" style="margin-top:8px"></div>
+    </div>
+
+    <div id="upload-result" style="display:none;margin-top:14px">
+      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:10px">// РЕЗУЛЬТАТ</div>
+      <div id="upload-result-text" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:300px;overflow-y:auto"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-primary" id="upload-apply-btn" onclick="applyUpload()" style="flex:1;justify-content:center">✓ ДОБАВИТЬ В БАЗУ ЗНАНИЙ</button>
+        <button class="btn btn-ghost" onclick="resetUpload()">↩ Ещё раз</button>
       </div>
-      <div id="pd-step3" style="display:none">
-        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// РЕКОМЕНДАЦИЯ СИСТЕМЫ</div>
-        <div id="pd-result" style="margin-bottom:14px"></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-primary" id="pd-apply-btn" onclick="pdApply()" style="flex:1;justify-content:center">⚡ ПРИМЕНИТЬ КАК ФОКУС-ПРОЕКТЫ + СОХРАНИТЬ</button>
-          <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
-        </div>
+    </div>
+
+    <div id="custom-mentors-list" style="margin-top:14px;display:none">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--teal);letter-spacing:1px;margin-bottom:8px">// ДОБАВЛЕННЫЕ ВРУЧНУЮ</div>
+      <div id="custom-mentors-chips" class="mentor-grid"></div>
+      <button class="btn btn-ghost" onclick="clearCustomMentors()" style="margin-top:8px;font-size:10px;color:var(--text3)">Очистить добавленных</button>
+    </div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Данные и экспорт</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:14px">Скачай все задачи из системы — для бэкапа, таблицы или списка.</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-ghost" onclick="exportJSON()" style="width:100%;justify-content:space-between;padding:12px 16px">
+        <span>📦 Бэкап и перенос</span>
+        <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">JSON</span>
+      </button>
+      <button class="btn btn-ghost" onclick="exportCSV()" style="width:100%;justify-content:space-between;padding:12px 16px">
+        <span>📊 Открыть в таблице</span>
+        <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">CSV · Excel / Numbers</span>
+      </button>
+      <button class="btn btn-ghost" onclick="exportMarkdown()" style="width:100%;justify-content:space-between;padding:12px 16px">
+        <span>📋 Скопировать как список</span>
+        <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">Markdown</span>
+      </button>
+    </div>
+    <div id="export-msg" style="display:none;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// СКОПИРОВАНО</div>
+    <div style="margin-top:10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// <span id="task-count-export">0</span> задач в системе</div>
+  </div>
+
+  <!-- PROJECT DISCOVERY -->
+  <div class="card" style="border-color:rgba(232,213,163,.25);background:rgba(232,213,163,.03)">
+    <div class="card-title" style="color:var(--accent)">⚡ Project Discovery</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:16px">Перечисли все свои проекты — AI задаст вопросы и поможет выбрать 2 главных фокус-проекта.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 1</div>
+        <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Список проектов</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.5">AI задаст вопросы по доходу, трекшену, страсти и времени до денег</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 2</div>
+        <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Твои ответы</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.5">AI анализирует через принципы книг и интервью из базы знаний</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 3</div>
+        <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Рекомендация</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.5">Обоснование через менторов + одна кнопка применяет фокус-проекты</div>
+      </div>
+    </div>
+    <div id="pd-step1">
+      <div class="form-group">
+        <label>Все твои проекты и идеи (по одному на строку)</label>
+        <textarea id="pd-projects" style="min-height:120px;font-size:12px" placeholder="Keeori / арт-игрушки для PopMart&#10;Meme Card на 6529.io&#10;Картины + NFT SuperRare&#10;Принты в OMG BCN&#10;Фотография&#10;Metrique (бренд одежды)&#10;Kids App&#10;Focus App&#10;Aphex Kit"></textarea>
+      </div>
+      <button class="btn btn-primary" id="pd-btn1" onclick="pdStep1()" style="width:100%;justify-content:center">АНАЛИЗИРОВАТЬ ПРОЕКТЫ</button>
+      <div class="error" id="pd-error"></div>
+    </div>
+    <div id="pd-step2" style="display:none">
+      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// AI ЗАДАЁТ ВОПРОСЫ</div>
+      <div id="pd-questions" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:14px;font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap"></div>
+      <div class="form-group">
+        <label>Твои ответы</label>
+        <textarea id="pd-answers" style="min-height:120px" placeholder="Отвечай по каждому проекту — можно кратко..."></textarea>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" id="pd-btn2" onclick="pdStep2()" style="flex:1;justify-content:center">ПОЛУЧИТЬ РЕКОМЕНДАЦИЮ</button>
+        <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
+      </div>
+    </div>
+    <div id="pd-step3" style="display:none">
+      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// РЕКОМЕНДАЦИЯ</div>
+      <div id="pd-result" style="margin-bottom:14px"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" id="pd-apply-btn" onclick="pdApply()" style="flex:1;justify-content:center">⚡ ПРИМЕНИТЬ КАК ФОКУС-ПРОЕКТЫ</button>
+        <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
       </div>
     </div>
   </div>
@@ -745,6 +792,7 @@ function saveProfile(){
     key: document.getElementById('p-key').value
   };
   localStorage.setItem('kp_profile',JSON.stringify(profile));
+  localStorage.setItem('kp_api_key', profile.key||'');
   const msg = document.getElementById('saved-msg');
   msg.style.display='block';
   setTimeout(()=>msg.style.display='none',2000);
@@ -896,6 +944,12 @@ async function analyzeTask(){
   document.getElementById('task-error').style.display='none';
   document.getElementById('ai-result').style.display='none';
 
+  const customMentors = JSON.parse(localStorage.getItem('kp_custom_mentors')||'[]');
+  const customMentorContext = customMentors.length > 0
+    ? '\n=== ДОПОЛНИТЕЛЬНЫЕ МЕНТОРЫ (загружены пользователем) ===\n' +
+      customMentors.map(m=>`- ${m.name}: ${m.principles.join(' / ')}`).join('\n')
+    : '';
+
   const focusProjects = profile.focus ? profile.focus.trim() : '';
 
   const systemPrompt = `Ты стратегический AI-советник. Помогаешь художнику расставлять приоритеты задач по матрице Эйзенхауэра и системе Кайдзен.
@@ -914,7 +968,7 @@ ${focusProjects}
 Если задача НЕ относится напрямую к фокус-проектам выше — она автоматически идёт в Q3 или Q4, независимо от её срочности или кажущейся важности. Это осознанный стратегический выбор пользователя. В insight объясни почему задача понижена и как она могла бы поддержать фокус-проект если вообще могла бы.
 Если задача ОТНОСИТСЯ к фокус-проекту — анализируй её по обычным правилам матрицы Эйзенхауэра.
 ` : ''}
-${MENTOR_CONTEXT}
+${MENTOR_CONTEXT}${customMentorContext}
 
 ВАЖНО ПРО МЕНТОРОВ: Используй ТОЛЬКО реально задокументированные принципы — из книг, публичных интервью, задокументированных высказываний. Формат строго: "Принцип из [название книги / название интервью / публичного источника]: [сам принцип]". Никакой интерпретации применительно к задаче. Никаких выдуманных слов. Если не знаешь точного задокументированного принципа этого человека — выбери другого ментора из базы у которого есть релевантный реальный принцип. Лучше честно сказать меньше, чем придумать больше.
 
@@ -1241,8 +1295,12 @@ async function syncPull(){
       localStorage.setItem('kp_tasks', JSON.stringify(tasks));
     }
     if(remoteProfile && typeof remoteProfile === 'object'){
+      // Keep local API key — don't overwrite with remote
+      const localKey = localStorage.getItem('kp_api_key') || profile.key || '';
       profile = remoteProfile;
+      if(localKey) profile.key = localKey;
       localStorage.setItem('kp_profile', JSON.stringify(profile));
+      localStorage.setItem('kp_api_key', profile.key||'');
       loadProfile();
     }
     if(remoteToday && typeof remoteToday === 'object'){
@@ -1251,7 +1309,8 @@ async function syncPull(){
     renderMatrix(); renderKanban(); renderToday(); updateExportCount();
     updateSyncStatus('✓ Данные загружены', 'var(--teal)');
   } catch(e){
-    updateSyncStatus('✗ Ошибка соединения', 'var(--red)');
+    updateSyncStatus('✗ Ошибка соединения', 'var(--red,#ff6b6b)');
+    console.warn('Sync error:', e);
   }
 }
 
@@ -1283,10 +1342,24 @@ async function activateSync(){
 
 function initSync(){
   const code = getSyncCode();
+  // Restore API key from separate storage
+  const savedKey = localStorage.getItem('kp_api_key');
+  if(savedKey && !profile.key){
+    profile.key = savedKey;
+    const keyEl = document.getElementById('p-key');
+    if(keyEl) keyEl.value = savedKey;
+    setKeyStatus(true);
+  }
+  // Check if running from file:// — sync won't work
+  if(location.protocol === 'file:'){
+    updateSyncStatus('⚠ Открыт как файл — синхронизация недоступна. Нужен GitHub Pages или сервер.', '#f39c12');
+    return;
+  }
   if(code){
     const el = document.getElementById('sync-code-input');
     if(el) el.value = code;
-    updateSyncStatus('// код активен: '+code.substring(0,4)+'****', 'var(--teal)');
+    updateSyncStatus('⟳ Загружаю данные...', 'var(--text2)');
+    syncPull();
   }
 }
 
@@ -1552,6 +1625,7 @@ function showTab(id){
   if(id==='matrix') renderMatrix();
   if(id==='kanban') renderKanban();
   if(id==='today') renderToday();
+  if(id==='settings') renderMentorChips();
 }
 
 // ============================================================
@@ -1670,6 +1744,137 @@ function renderToday(){
   }).join('');
 }
 
+function syncApiKey(val){
+  localStorage.setItem('kp_api_key', val);
+  profile.key = val;
+  // Mirror to profile p-key if it exists
+  const k = document.getElementById('p-key');
+  if(k && k.value !== val) k.value = val;
+  setKeyStatus(!!val);
+  // Also update key-dot2
+  const d2 = document.getElementById('key-dot2');
+  if(d2) d2.className='key-dot'+(val?' ok':'');
+}
+
+// ============================================================
+// FILE UPLOAD TO KNOWLEDGE BASE
+// ============================================================
+let uploadType = 'interview';
+let uploadResultData = '';
+
+function setUploadType(type){
+  uploadType = type;
+  document.getElementById('upload-type-interview').className = type==='interview' ? 'btn btn-primary' : 'btn btn-ghost';
+  document.getElementById('upload-type-books').className = type==='books' ? 'btn btn-primary' : 'btn btn-ghost';
+  document.getElementById('upload-label').textContent = type==='interview'
+    ? 'Вставь текст транскрипта интервью'
+    : 'Вставь список книг (автор — название, по одной на строку)';
+  document.getElementById('upload-text').placeholder = type==='interview'
+    ? 'Вставь текст транскрипта...\n\nПример:\nJohn: How did you get rich?\nMike: I started with...'
+    : 'Брайан Трейси — Съешьте лягушку\nРоберт Кийосаки — Богатый папа бедный папа\n...';
+}
+
+function resetUpload(){
+  document.getElementById('upload-step1').style.display='block';
+  document.getElementById('upload-result').style.display='none';
+  document.getElementById('upload-text').value='';
+  document.getElementById('upload-error').style.display='none';
+  uploadResultData='';
+}
+
+async function processUpload(){
+  const text = document.getElementById('upload-text').value.trim();
+  if(!text){ document.getElementById('upload-error').textContent='Введи текст'; document.getElementById('upload-error').style.display='block'; return; }
+  const key = localStorage.getItem('kp_api_key') || profile.key;
+  if(!key){ document.getElementById('upload-error').textContent='Сначала введи API ключ в Settings'; document.getElementById('upload-error').style.display='block'; return; }
+
+  const btn = document.getElementById('upload-btn');
+  btn.innerHTML='<div class="spinner" style="border-top-color:#000"></div> АНАЛИЗИРУЮ...';
+  btn.disabled=true;
+  document.getElementById('upload-error').style.display='none';
+
+  const systemPrompt = uploadType==='interview'
+    ? `Ты анализируешь транскрипт интервью с успешными предпринимателями. Извлеки из текста:
+1. Имена реальных участников интервью (не ведущего)
+2. Их ключевые задокументированные принципы и цитаты
+3. Их бизнес/достижения для контекста
+
+Формат ответа — строго JSON:
+{"mentors":[{"name":"Имя Фамилия (достижение)","principles":["принцип 1 из интервью","принцип 2","принцип 3"]}]}
+Только реальные цитаты и принципы из текста. Без выдуманного.`
+    : `Ты анализируешь список книг. Для каждой книги из списка извлеки 2-3 ключевых бизнес-принципа которые реально задокументированы в этой книге.
+
+Формат ответа — строго JSON:
+{"mentors":[{"name":"Автор (Название книги)","principles":["принцип 1","принцип 2","принцип 3"]}]}
+Только реальные принципы из книг. Без выдуманного.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2000,
+        system: systemPrompt,
+        messages:[{role:'user',content:text.substring(0,8000)}]
+      })
+    });
+    const data = await resp.json();
+    if(data.error) throw new Error(data.error.message);
+    const raw = data.content[0].text;
+    // Parse JSON
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    uploadResultData = JSON.stringify(parsed);
+
+    // Show result
+    let display = '';
+    parsed.mentors.forEach(m=>{
+      display += `✓ ${m.name}\n`;
+      m.principles.forEach(p=>display+=`  • ${p}\n`);
+      display+='\n';
+    });
+    document.getElementById('upload-result-text').textContent = display;
+    document.getElementById('upload-step1').style.display='none';
+    document.getElementById('upload-result').style.display='block';
+  } catch(e){
+    document.getElementById('upload-error').textContent='Ошибка: '+e.message;
+    document.getElementById('upload-error').style.display='block';
+  } finally {
+    btn.innerHTML='ОБРАБОТАТЬ И ДОБАВИТЬ В БАЗУ';
+    btn.disabled=false;
+  }
+}
+
+function applyUpload(){
+  if(!uploadResultData) return;
+  const parsed = JSON.parse(uploadResultData);
+  const existing = JSON.parse(localStorage.getItem('kp_custom_mentors')||'[]');
+  const merged = [...existing, ...parsed.mentors];
+  localStorage.setItem('kp_custom_mentors', JSON.stringify(merged));
+  renderCustomMentors();
+  renderMentorChips();
+  resetUpload();
+  toast('✓ '+parsed.mentors.length+' менторов добавлено в базу');
+}
+
+function clearCustomMentors(){
+  localStorage.removeItem('kp_custom_mentors');
+  renderCustomMentors();
+  renderMentorChips();
+  toast('Кастомные менторы удалены');
+}
+
+function renderCustomMentors(){
+  const list = JSON.parse(localStorage.getItem('kp_custom_mentors')||'[]');
+  const wrap = document.getElementById('custom-mentors-list');
+  const chips = document.getElementById('custom-mentors-chips');
+  if(!wrap||!chips) return;
+  if(list.length===0){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  chips.innerHTML = list.map(m=>`<span class="mentor-chip" style="border-color:rgba(78,205,196,.3);color:var(--teal)">${escHtml(m.name)}</span>`).join('');
+}
+
 // ============================================================
 // MENTOR CHIPS
 // ============================================================
@@ -1708,8 +1913,17 @@ loadProfile();
 renderMatrix();
 renderKanban();
 renderMentorChips();
+renderCustomMentors();
 updateExportCount();
 initSync();
+// Sync key-dot2
+const savedKey2 = localStorage.getItem('kp_api_key');
+if(savedKey2){
+  const el2 = document.getElementById('p-key2');
+  if(el2) el2.value = savedKey2;
+  const d2 = document.getElementById('key-dot2');
+  if(d2) d2.className='key-dot ok';
+}
 
 // Pre-fill with Alexis's profile if empty
 if(!profile.name){
