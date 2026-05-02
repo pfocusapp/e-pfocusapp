@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kaizen Priority — by Alexis</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#0a0a0a !important;background-color:#0a0a0a !important}
+body{background:#0a0a0a !important;background-color:#0a0a0a !important}
+:root{
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --surface2:#1a1a1a;
+  --surface3:#222222;
+  --border:#2a2a2a;
+  --border2:#333333;
+  --text:#f0ede8;
+  --text2:#888880;
+  --text3:#444440;
+  --accent:#e8d5a3;
+  --accent2:#c4a96b;
+  --teal:#4ecdc4;
+  --teal-dim:#2a7a75;
+  --red:#e05252;
+  --red-dim:#5a1f1f;
+  --orange:#f4a93b;
+  --orange-dim:#5a3d10;
+  --gray-dim:#1e1e1e;
+  --q1:#e05252; --q1-bg:#1a0a0a;
+  --q2:#4ecdc4; --q2-bg:#0a1a1a;
+  --q3:#f4a93b; --q3-bg:#1a1200;
+  --q4:#666660; --q4-bg:#141414;
+  --personal:#9b7fe8; --family:#4ecdc4; --business:#e8d5a3; --social:#e05252; --hobby:#f4a93b;
+  --r:6px; --rs:4px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:14px;
+  line-height:1.6;
+}
+::selection{background:var(--accent2);color:#000}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* HEADER */
+header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:3px;
+  color:var(--accent);
+  display:flex;align-items:center;gap:12px;
+}
+.logo-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;font-weight:400}
+nav{display:flex;gap:2px}
+.tab{
+  padding:7px 16px;border:none;
+  background:none;font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--text2);cursor:pointer;
+  border-radius:var(--rs);transition:all .15s;
+  letter-spacing:1px;text-transform:uppercase;
+  white-space:nowrap;
+}
+.tab:hover{background:var(--surface2);color:var(--text)}
+.tab.active{background:var(--accent);color:#000;font-weight:700}
+
+/* MAIN */
+main{max-width:1300px;margin:0 auto;padding:28px 20px}
+section{display:none}
+section.active{display:block}
+
+/* PAGE TITLE */
+.page-head{margin-bottom:28px}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;color:var(--accent);line-height:1}
+.page-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:2px;margin-top:6px;text-transform:uppercase}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.card-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'//';color:var(--accent2)}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* FORMS */
+.form-group{margin-bottom:14px}
+label{display:block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+input[type=text],input[type=password],textarea,select{
+  width:100%;padding:9px 12px;
+  background:#1a1a1a !important;
+  background-color:#1a1a1a !important;
+  border:1px solid var(--border);
+  border-radius:var(--rs);
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  color:#f0ede8 !important;outline:none;
+  transition:border-color .15s;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  -webkit-text-fill-color:#f0ede8 !important;
+  opacity:1 !important;
+  box-shadow:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent2)}
+textarea{resize:vertical;min-height:80px}
+input::placeholder,textarea::placeholder{
+  color:#444440 !important;
+  -webkit-text-fill-color:#444440 !important;
+  opacity:1;
+}
+/* iOS autofill dark override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 30px #1a1a1a inset !important;
+  -webkit-text-fill-color:#f0ede8 !important;
+  background-color:#1a1a1a !important;
+  caret-color:#f0ede8;
+}
+small{font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);display:block;margin-top:4px}
+small a{color:var(--accent2)}
+
+/* BUTTONS */
+.btn{
+  padding:9px 20px;border-radius:var(--rs);border:none;
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;
+  transition:all .15s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary{background:var(--accent);color:#000;font-weight:700}
+.btn-primary:hover{background:var(--accent2)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--text)}
+.btn-danger{background:none;border:1px solid var(--red-dim);color:var(--red)}
+.btn-danger:hover{background:var(--red-dim)}
+.spinner{width:12px;height:12px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(232,213,163,.03));pointer-events:none}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--accent);line-height:1}
+.stat-l{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--text2);margin-top:4px;text-transform:uppercase}
+
+/* ADD TASK */
+.add-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.ai-result{display:none;margin-top:16px}
+.result-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.result-head{padding:10px 14px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 14px;border-bottom:1px solid var(--border);gap:10px}
+.result-row:last-child{border-bottom:none}
+.rl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--text2);text-transform:uppercase;flex-shrink:0;min-width:100px}
+.rv{font-size:13px;color:var(--text);text-align:right;line-height:1.4}
+.insight{background:var(--surface3);border-left:2px solid var(--accent);padding:12px 14px;margin-top:12px;border-radius:0 var(--rs) var(--rs) 0}
+.insight-text{font-style:italic;color:var(--accent);font-size:13px;line-height:1.5}
+.result-actions{display:flex;gap:8px;margin-top:12px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:2px;text-transform:uppercase;font-weight:700}
+.badge-q1{background:var(--q1-bg);color:var(--q1);border:1px solid var(--q1)}
+.badge-q2{background:var(--q2-bg);color:var(--q2);border:1px solid var(--q2)}
+.badge-q3{background:var(--q3-bg);color:var(--q3);border:1px solid var(--q3)}
+.badge-q4{background:var(--q4-bg);color:var(--q4);border:1px solid var(--q4)}
+.badge-want{background:rgba(78,205,196,.1);color:var(--teal);border:1px solid var(--teal-dim)}
+.badge-must{background:var(--red-dim);color:var(--red);border:1px solid var(--red)}
+
+/* MATRIX */
+.matrix-labels{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding:0 4px}
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:12px}
+.quadrant{border-radius:var(--r);padding:16px;border:1px solid;min-height:200px;position:relative}
+.q1-s{border-color:var(--q1);background:var(--q1-bg)}
+.q2-s{border-color:var(--q2);background:var(--q2-bg)}
+.q3-s{border-color:var(--q3);background:var(--q3-bg)}
+.q4-s{border-color:var(--q4);background:var(--q4-bg)}
+.q-num{font-family:'Bebas Neue',sans-serif;font-size:48px;opacity:.08;position:absolute;top:8px;right:12px;line-height:1}
+.q1-s .q-num{color:var(--q1)}
+.q2-s .q-num{color:var(--q2)}
+.q3-s .q-num{color:var(--q3)}
+.q4-s .q-num{color:var(--q4)}
+.q-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.q1-s .q-label{color:var(--q1)}
+.q2-s .q-label{color:var(--q2)}
+.q3-s .q-label{color:var(--q3)}
+.q4-s .q-label{color:var(--q4)}
+.q-action{font-size:11px;color:var(--text2);margin-bottom:12px;font-style:italic}
+.task-card{background:rgba(255,255,255,.03);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px;border-left:2px solid;position:relative}
+.tc-text{font-size:12px;color:var(--text);line-height:1.4;margin-bottom:6px}
+.tc-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.area-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tc-area{font-family:'Space Mono',monospace;font-size:9px;color:var(--text2)}
+.tc-rm{background:none;border:none;color:var(--text3);cursor:pointer;font-size:10px;margin-left:auto;padding:2px 4px;border-radius:2px;transition:color .1s}
+.tc-rm:hover{color:var(--red)}
+.empty-q{text-align:center;padding:24px 12px;color:var(--text3);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px}
+
+/* KANBAN */
+.kanban-scroll{overflow-x:auto;padding-bottom:12px}
+.kanban{display:flex;gap:12px;min-width:max-content;min-height:500px}
+.kcol{width:210px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;flex-direction:column}
+.kcol-head{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.kcol-sub{font-size:10px;color:var(--text3);margin-bottom:12px;font-style:italic}
+.kcnt{flex:1}
+.kcard{background:var(--surface2);border-radius:var(--rs);padding:10px 12px;margin-bottom:8px;border-top:2px solid}
+.kcard-text{font-size:12px;line-height:1.4;color:var(--text);margin-bottom:8px}
+.kcard-area{font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.kcard-moves{display:flex;gap:4px;flex-wrap:wrap}
+.mv{font-family:'Space Mono',monospace;font-size:8px;padding:3px 6px;border:1px solid var(--border2);border-radius:2px;background:none;cursor:pointer;color:var(--text3);transition:all .1s}
+.mv:hover{border-color:var(--accent2);color:var(--accent)}
+
+/* INFO PANEL */
+.info-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.info-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:10px}
+.q-info-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.q-info-item:last-child{margin-bottom:0}
+
+/* LEGEND */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.leg{display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:1px}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ERROR */
+.error{background:var(--red-dim);border:1px solid var(--red);border-radius:var(--rs);padding:10px 12px;font-size:12px;color:var(--red);margin-top:10px;display:none}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--accent);color:#000;padding:10px 18px;border-radius:var(--rs);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;transform:translateY(80px);transition:transform .3s;z-index:999;font-weight:700;display:flex;align-items:center;gap:10px;white-space:nowrap}
+#toast.show{transform:translateY(0)}
+
+/* PROFILE KEY SECTION */
+.key-status{display:flex;align-items:center;gap:8px;margin-top:8px}
+.key-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0}
+.key-dot.ok{background:var(--teal)}
+.key-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:1px}
+
+/* MENTOR CHIPS */
+.mentor-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mentor-chip{padding:4px 10px;border-radius:2px;background:var(--surface3);border:1px solid var(--border2);font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:1px;cursor:default}
+.mentor-chip:hover{border-color:var(--accent2);color:var(--accent)}
+
+/* MATRIX AXIS */
+.matrix-wrap{position:relative;padding-left:24px}
+.axis-y{position:absolute;left:0;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+
+@media(max-width:900px){
+  .two-col,.add-layout{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .matrix-grid{grid-template-columns:1fr}
+  nav{gap:1px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tab{padding:6px 10px;font-size:9px;flex-shrink:0}
+  header{padding:0 14px}
+  main{padding:16px 12px}
+  .page-title{font-size:26px}
+  .card{padding:14px}
+  .kanban-scroll{-webkit-overflow-scrolling:touch}
+  .stat-n{font-size:28px}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .stat{padding:12px}
+  .stat-n{font-size:24px}
+  header{height:auto;padding:10px 14px;flex-wrap:wrap;gap:8px}
+  nav{width:100%;padding-bottom:4px}
+  .tab{padding:5px 8px;font-size:8px}
+  .logo-sub{display:none}
+  .quadrant{min-height:150px}
+  .add-layout{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    KAIZEN<span style="color:var(--text2);font-size:14px;margin:0 4px">/</span>PRIORITY
+    <span class="logo-sub">Focus System</span>
+  </div>
+  <nav>
+    <button class="tab active" onclick="showTab('profile')">Profile</button>
+    <button class="tab" onclick="showTab('add')">+ Task</button>
+    <button class="tab" onclick="showTab('matrix')">Matrix</button>
+    <button class="tab" onclick="showTab('kanban')">Kanban</button>
+    <button class="tab" onclick="showTab('today')" id="tab-today">Today ✦</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- PROFILE -->
+<section id="s-profile" class="active">
+  <div class="page-head">
+    <div class="page-title">YOUR SYSTEM</div>
+    <div class="page-sub">// Mission · Criteria · Mentors · API</div>
+  </div>
+  <div class="two-col">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-title">Mission & Context</div>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="p-name" placeholder="How should AI address you?">
+        </div>
+        <div class="form-group">
+          <label>Your Mission (who are you and why are you here?)</label>
+          <textarea id="p-mission" style="min-height:90px" placeholder="I am a multidisciplinary artist aiming for financial independence through my art..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Current Situation & Projects</label>
+          <textarea id="p-context" style="min-height:110px" placeholder="Describe your main projects, current challenges, what matters most right now..."></textarea>
+        </div>
+        <div class="form-group">
+          <label style="">12-Month Goal</label>
+          <textarea id="p-goal" style="min-height:60px" placeholder="What specific result do you want to achieve in the next 12 months?"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Priority Criteria</div>
+        <div class="form-group">
+          <label>What makes a task truly important for YOU?</label>
+          <textarea id="p-criteria" style="min-height:70px" placeholder="e.g. Brings income now or within 30 days, builds my art brand, leads to PopMart / galleries, gives creative freedom..."></textarea>
+        </div>
+        <div class="form-group" style="margin-top:8px">
+          <label style="color:var(--accent)">⚡ Фокус-проекты (максимум 2)</label>
+          <textarea id="p-focus" style="min-height:60px;border-color:rgba(232,213,163,.3)" placeholder="Например: 1. Keeori → PopMart&#10;2. Meme Card на 6529.io"></textarea>
+          <small style="color:var(--accent2)">Задачи НЕ из этих проектов AI автоматически понижает до Q3/Q4 — независимо от срочности.</small>
+        </div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px">
+            <div style="background:rgba(155,127,232,.1);border:1px solid rgba(155,127,232,.3);border-radius:var(--rs);padding:8px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:#9b7fe8;letter-spacing:1px">🧠 SELF</div>
+            <div style="background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.3);border-radius:var(--rs);padding:8px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--teal);letter-spacing:1px">👨‍👩 FAMILY</div>
+            <div style="background:rgba(232,213,163,.1);border:1px solid rgba(232,213,163,.3);border-radius:var(--rs);padding:8px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--accent);letter-spacing:1px">💼 BSNS</div>
+            <div style="background:rgba(224,82,82,.1);border:1px solid rgba(224,82,82,.3);border-radius:var(--rs);padding:8px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--red);letter-spacing:1px">🌍 SOCIAL</div>
+            <div style="background:rgba(244,169,59,.1);border:1px solid rgba(244,169,59,.3);border-radius:var(--rs);padding:8px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:1px">🎨 ART</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-title">API Access</div>
+        <div class="form-group">
+          <label>Anthropic API Key</label>
+          <input type="password" id="p-key" placeholder="sk-ant-api03-...">
+          <div class="key-status">
+            <div class="key-dot" id="key-dot"></div>
+            <span class="key-label" id="key-label">Not configured</span>
+          </div>
+          <small>Key stored locally in your browser only.</small>
+        </div>
+        <button class="btn btn-primary" onclick="saveProfile()" style="width:100%;justify-content:center">
+          SAVE PROFILE
+        </button>
+        <div id="saved-msg" style="display:none;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// SAVED</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Your Mentor Base</div>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">AI will reference these people when analyzing your tasks — their principles, what they'd say about your specific situation.</p>
+        <div class="mentor-grid" id="mentor-chips"></div>
+        <div style="margin-top:8px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// 76 книг + 6 реальных интервью SHK интегрированы</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Данные и экспорт</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:14px">Скачай все задачи из системы — для бэкапа, таблицы или списка.</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-ghost" onclick="exportJSON()" style="width:100%;justify-content:space-between;padding:12px 16px">
+            <span>📦 Бэкап и перенос</span>
+            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">JSON</span>
+          </button>
+          <button class="btn btn-ghost" onclick="exportCSV()" style="width:100%;justify-content:space-between;padding:12px 16px">
+            <span>📊 Открыть в таблице</span>
+            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">CSV · Excel / Numbers</span>
+          </button>
+          <button class="btn btn-ghost" onclick="exportMarkdown()" style="width:100%;justify-content:space-between;padding:12px 16px">
+            <span>📋 Скопировать как список</span>
+            <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">Markdown</span>
+          </button>
+        </div>
+        <div id="export-msg" style="display:none;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// СКОПИРОВАНО</div>
+        <div style="margin-top:10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px">// <span id="task-count-export">0</span> задач в системе</div>
+      </div>
+      <div class="card" style="border-color:rgba(78,205,196,.3);background:rgba(78,205,196,.03)">
+        <div class="card-title" style="color:var(--teal)">☁ Синхронизация между устройствами</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">Открывай приложение с iPhone, ноутбука, любого браузера — данные везде одинаковые. Введи одинаковый Sync Code на всех устройствах.</p>
+
+        <div class="form-group">
+          <label style="color:var(--teal)">Твой Sync Code</label>
+          <div style="display:flex;gap:8px">
+            <input id="sync-code-input" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" style="font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;flex:1;border-color:rgba(78,205,196,.3)" maxlength="19" oninput="this.value=this.value.toUpperCase()">
+            <button class="btn btn-ghost" onclick="generateAndSetCode()" style="white-space:nowrap;border-color:rgba(78,205,196,.3);color:var(--teal)">Создать</button>
+          </div>
+          <small style="color:var(--text3)">Запиши код — он нужен на других устройствах. Если потеряешь, данные останутся в браузере.</small>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button class="btn btn-ghost" onclick="activateSync()" style="flex:1;justify-content:center;border-color:rgba(78,205,196,.3);color:var(--teal)">⟳ Активировать / Загрузить</button>
+          <button class="btn btn-ghost" onclick="syncPush()" style="flex:1;justify-content:center">↑ Отправить в облако</button>
+        </div>
+
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px" id="sync-status">// не синхронизировано</div>
+      </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span class="badge badge-q1">Q1</span>
+            <span style="font-size:12px;color:var(--text2)">Urgent + Important → Do NOW. Crisis, deadline, opportunity closing</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span class="badge badge-q2">Q2</span>
+            <span style="font-size:12px;color:var(--text2)">Important, not urgent → GOLD ZONE. Strategy, brand building, skill</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span class="badge badge-q3">Q3</span>
+            <span style="font-size:12px;color:var(--text2)">Urgent, not important → Delegate or minimize. Others' priorities</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span class="badge badge-q4">Q4</span>
+            <span style="font-size:12px;color:var(--text2)">Not urgent + not important → Eliminate. Time traps</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:1px;margin-bottom:6px">// KAIZEN PRINCIPLE</div>
+          <p style="font-size:12px;color:var(--text2);font-style:italic;line-height:1.5">"Quadrant 2 is your studio. You rarely live there — but everything important gets built there." — Covey</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DISCOVERY — full width -->
+  <div style="margin-top:20px">
+    <div class="card" style="border-color:rgba(232,213,163,.25);background:rgba(232,213,163,.03)">
+      <div class="card-title" style="color:var(--accent)">⚡ Project Discovery — найди свои 2 фокус-проекта</div>
+
+      <!-- Step descriptions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 1</div>
+          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Список проектов</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.5">Внеси все свои проекты и идеи — AI задаст уточняющие вопросы по доходу, трекшену, страсти и времени до денег</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 2</div>
+          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Твои ответы</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.5">Отвечай в свободной форме. AI анализирует через принципы книг и интервью из базы знаний</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);letter-spacing:1px;margin-bottom:5px">// ШАГ 3</div>
+          <div style="font-size:11px;color:var(--text);font-weight:500;margin-bottom:4px">Рекомендация</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.5">Получаешь обоснование через менторов + одна кнопка применяет результат как фокус-проекты</div>
+        </div>
+      </div>
+      <div id="pd-step1">
+        <div class="form-group">
+          <label>Все твои проекты и идеи (по одному на строку)</label>
+          <textarea id="pd-projects" style="min-height:120px;font-size:12px" placeholder="Keeori / арт-игрушки для PopMart&#10;Meme Card на 6529.io&#10;Картины + NFT SuperRare&#10;Принты в OMG BCN&#10;Фотография&#10;Metrique (бренд одежды)&#10;Kids App&#10;Focus App&#10;Aphex Kit"></textarea>
+        </div>
+        <button class="btn btn-primary" id="pd-btn1" onclick="pdStep1()" style="width:100%;justify-content:center">АНАЛИЗИРОВАТЬ ПРОЕКТЫ</button>
+        <div class="error" id="pd-error"></div>
+      </div>
+      <div id="pd-step2" style="display:none">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// AI ЗАДАЁТ УТОЧНЯЮЩИЕ ВОПРОСЫ</div>
+        <div id="pd-questions" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:14px;font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap"></div>
+        <div class="form-group">
+          <label>Твои ответы (в свободной форме)</label>
+          <textarea id="pd-answers" style="min-height:120px" placeholder="Отвечай по каждому проекту — можно кратко..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="pd-btn2" onclick="pdStep2()" style="flex:1;justify-content:center">ПОЛУЧИТЬ РЕКОМЕНДАЦИЮ</button>
+          <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
+        </div>
+      </div>
+      <div id="pd-step3" style="display:none">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:12px">// РЕКОМЕНДАЦИЯ СИСТЕМЫ</div>
+        <div id="pd-result" style="margin-bottom:14px"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="pd-apply-btn" onclick="pdApply()" style="flex:1;justify-content:center">⚡ ПРИМЕНИТЬ КАК ФОКУС-ПРОЕКТЫ + СОХРАНИТЬ</button>
+          <button class="btn btn-ghost" onclick="pdReset()">↩ Сначала</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ADD TASK -->
+<section id="s-add">
+  <div class="page-head">
+    <div class="page-title">ADD TASK</div>
+    <div class="page-sub">// Describe → AI analyzes → Place in system</div>
+  </div>
+  <div class="add-layout">
+    <div class="card">
+      <div class="card-title">Brain Dump</div>
+      <div class="form-group">
+        <label>Describe the task or idea</label>
+        <textarea id="task-input" style="min-height:130px" placeholder="Write anything: 'Send PopMart presentation follow-up email', 'Work on new Keeori character design', 'Reply to OMG BCN about payment'..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="analyze-btn" onclick="analyzeTask()">
+        ANALYZE WITH AI
+      </button>
+      <div class="error" id="task-error"></div>
+
+      <div class="ai-result" id="ai-result">
+        <div class="result-panel">
+          <div class="result-head" id="result-head">// AI ANALYSIS</div>
+          <div class="result-row"><span class="rl">Quadrant</span><span class="rv" id="r-q"></span></div>
+          <div class="result-row"><span class="rl">Urgency</span><span class="rv" id="r-u"></span></div>
+          <div class="result-row"><span class="rl">Importance</span><span class="rv" id="r-i"></span></div>
+          <div class="result-row"><span class="rl">Type</span><span class="rv" id="r-t"></span></div>
+          <div class="result-row"><span class="rl">Life Area</span><span class="rv" id="r-a"></span></div>
+          <div class="result-row"><span class="rl">Kanban</span><span class="rv" id="r-k"></span></div>
+          <div class="result-row" id="r-focus-row" style="display:none"><span class="rl">Фокус</span><span class="rv" id="r-focus"></span></div>
+        </div>
+        <div id="r-time" style="display:none;margin-top:12px">
+        </div>
+        <div style="margin-top:12px">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:8px">// Голоса менторов</div>
+          <div id="r-mentors"></div>
+        </div>
+        <div class="insight">
+          <div class="insight-text" id="r-insight"></div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-primary" onclick="addTask()" style="width:100%;justify-content:center;font-size:12px;padding:13px;letter-spacing:2px">
+            ↓ ДОБАВИТЬ В СИСТЕМУ (Matrix + Kanban)
+          </button>
+          <button class="btn btn-ghost" onclick="clearAnalysis()" style="width:100%;justify-content:center;margin-top:6px">ОЧИСТИТЬ</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="info-box">
+        <div class="info-title">How it works</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">AI reads your profile — your mission, projects, goals, criteria — and analyzes the task in your specific context. Not abstract advice. Advice for <em>you</em>.</p>
+        <p style="font-size:12px;color:var(--text2);line-height:1.6">Then it pulls from your mentor base — referencing what Reed Hoffman, Маргулан, Kanye, or Moebius would say about this specific task in your situation.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-title">Kaizen Filter</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:rgba(78,205,196,.05);border:1px solid var(--teal-dim);border-radius:var(--rs);padding:10px">
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:6px">✓ WANT</div>
+            <p style="font-size:11px;color:var(--text2);line-height:1.4">Your mission. Your dream. Your ikigai. Gives energy.</p>
+          </div>
+          <div style="background:rgba(224,82,82,.05);border:1px solid var(--red-dim);border-radius:var(--rs);padding:10px">
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1px;margin-bottom:6px">⚠ MUST</div>
+            <p style="font-size:11px;color:var(--text2);line-height:1.4">Someone else's want. Obligation. Drains energy.</p>
+          </div>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">Quick Tips</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;font-family:'Space Mono',monospace">
+          <div>→ Be specific. "Send email to PopMart" beats "work on toys"</div>
+          <div>→ One task at a time. Not "do marketing"</div>
+          <div>→ Include context: deadline, who's involved, why now</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATRIX -->
+<section id="s-matrix">
+  <div class="page-head">
+    <div class="page-title">MATRIX</div>
+    <div class="page-sub">// Eisenhower Prioritization System</div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:20px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent2);margin-bottom:10px;text-transform:uppercase">// Что показывает Matrix</div>
+    <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:8px">Все твои задачи распределены по <strong style="color:var(--accent)">4 квадрантам Эйзенхауэра</strong>. Визуально видно сколько задач в каждом квадранте.</p>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">Если у тебя 8 задач в Q1 "Срочно+Важно" — это сигнал что что-то не так. <em>Настоящих Q1 не может быть много.</em></p>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(232,213,163,.06);border:1px solid rgba(232,213,163,.15);border-radius:var(--rs)">
+      <span style="font-size:18px">🎯</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px">Matrix отвечает на вопрос: <em>"Что вообще важно в моей жизни прямо сейчас?"</em></span>
+    </div>
+  </div>
+
+  <div class="stats-row" id="matrix-stats"></div>
+  <div class="legend" id="matrix-legend">
+    <div class="leg"><span class="leg-dot" style="background:var(--personal)"></span>Self</div>
+    <div class="leg"><span class="leg-dot" style="background:var(--family)"></span>Family</div>
+    <div class="leg"><span class="leg-dot" style="background:var(--business)"></span>Business</div>
+    <div class="leg"><span class="leg-dot" style="background:var(--social)"></span>Social</div>
+    <div class="leg"><span class="leg-dot" style="background:var(--hobby)"></span>Art/Hobby</div>
+  </div>
+  <div style="margin-bottom:6px">
+    <div style="text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">← NOT URGENT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; URGENT →</div>
+    <div class="matrix-grid" id="matrix-grid"></div>
+    <div style="text-align:center;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-top:8px">↑ IMPORTANT (top) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NOT IMPORTANT (bottom) ↓</div>
+  </div>
+</section>
+
+<!-- KANBAN -->
+<section id="s-kanban">
+  <div class="page-head">
+    <div class="page-title">KANBAN</div>
+    <div class="page-sub">// Kaizen Flow — Margoulan System</div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:20px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent2);margin-bottom:10px;text-transform:uppercase">// Что показывает Kanban</div>
+    <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:10px">Те же задачи, но по <strong style="color:var(--accent)">статусу движения</strong>. Каждая задача находится в одной из колонок:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div style="padding:8px 12px;background:var(--surface3);border-radius:var(--rs);border-left:2px solid var(--border2)">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:1px;margin-bottom:3px">BACKLOG</div>
+        <div style="font-size:11px;color:var(--text2)">Всё что есть — ждёт очереди</div>
+      </div>
+      <div style="padding:8px 12px;background:var(--surface3);border-radius:var(--rs);border-left:2px solid var(--orange)">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:1px;margin-bottom:3px">THIS WEEK</div>
+        <div style="font-size:11px;color:var(--text2)">Взял в работу на эту неделю</div>
+      </div>
+      <div style="padding:8px 12px;background:var(--surface3);border-radius:var(--rs);border-left:2px solid var(--teal)">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px">IN PROGRESS</div>
+        <div style="font-size:11px;color:var(--text2)">Делаю прямо сейчас</div>
+      </div>
+      <div style="padding:8px 12px;background:var(--surface3);border-radius:var(--rs);border-left:2px solid var(--text3)">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:1px;margin-bottom:3px">WAITING</div>
+        <div style="font-size:11px;color:var(--text2)">Отправил — жду ответа</div>
+      </div>
+      <div style="padding:8px 12px;background:var(--surface3);border-radius:var(--rs);border-left:2px solid var(--accent2);grid-column:1/-1">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent2);letter-spacing:1px;margin-bottom:3px">DONE</div>
+        <div style="font-size:11px;color:var(--text2)">Готово ✓ — вычеркнуто как у Брайана Трейси</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(232,213,163,.06);border:1px solid rgba(232,213,163,.15);border-radius:var(--rs)">
+      <span style="font-size:18px">📍</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px">Kanban отвечает на вопрос: <em>"Где сейчас каждая задача?"</em></span>
+    </div>
+  </div>
+
+  <div class="stats-row" id="kanban-stats"></div>
+  <div class="kanban-scroll">
+    <div class="kanban" id="kanban-board"></div>
+  </div>
+</section>
+
+<!-- TODAY -->
+<section id="s-today">
+  <div class="page-head">
+    <div class="page-title">TODAY</div>
+    <div class="page-sub">// Твои 3 задачи на сегодня — не больше</div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:20px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent2);margin-bottom:8px;text-transform:uppercase">// Правило дня</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6">Выбери <strong style="color:var(--accent)">1 главную лягушку</strong> (Q1 или Q2) + до 2 поддерживающих задач. Начни с лягушки — остальное после. Брайан Трейси, Маргулан, Кови — все об этом.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+    <div class="card" style="border-color:var(--accent);background:rgba(232,213,163,.04)">
+      <div class="card-title" style="color:var(--accent)">🐸 Главная лягушка</div>
+      <div id="today-frog" style="min-height:80px">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// не выбрана</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Поддерживающие (макс. 2)</div>
+      <div id="today-support" style="min-height:80px">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// не выбраны</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Выбрать из задач системы</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.5">Нажми <strong style="color:var(--accent)">🐸 Лягушка</strong> чтобы сделать задачу главной на сегодня, или <strong style="color:var(--text)">+ В день</strong> для поддерживающей.</p>
+    <div id="today-pick-list"></div>
+    <div id="today-empty" style="display:none;font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:24px 0;letter-spacing:1px">// Добавь задачи через вкладку + Task</div>
+  </div>
+</section>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const AREAS = {
+  personal:{label:'Self',color:'#9b7fe8'},
+  family:{label:'Family',color:'#4ecdc4'},
+  business:{label:'Business',color:'#e8d5a3'},
+  social:{label:'Social',color:'#e05252'},
+  hobby:{label:'Art/Hobby',color:'#f4a93b'}
+};
+const KANBAN_COLS = [
+  {id:'backlog',label:'BACKLOG',sub:'All tasks waiting'},
+  {id:'todo',label:'THIS WEEK',sub:'Committed to do'},
+  {id:'inprogress',label:'IN PROGRESS',sub:'Ball on my side'},
+  {id:'waiting',label:'WAITING',sub:'Ball on their side'},
+  {id:'done',label:'DONE',sub:'Completed ✓'}
+];
+const Q_DEFS = [
+  {id:1,label:'Срочно + Важно',action:'Do NOW',border:'var(--q1)',bg:'var(--q1-bg)',cls:'q1-s',badge:'badge-q1'},
+  {id:2,label:'Важно, не срочно',action:'Schedule it — Gold Zone',border:'var(--q2)',bg:'var(--q2-bg)',cls:'q2-s',badge:'badge-q2'},
+  {id:3,label:'Срочно, не важно',action:'Delegate or minimize',border:'var(--q3)',bg:'var(--q3-bg)',cls:'q3-s',badge:'badge-q3'},
+  {id:4,label:'Не срочно, не важно',action:'Eliminate',border:'var(--q4)',bg:'var(--q4-bg)',cls:'q4-s',badge:'badge-q4'}
+];
+
+let tasks = JSON.parse(localStorage.getItem('kp_tasks')||'[]');
+let profile = JSON.parse(localStorage.getItem('kp_profile')||'{}');
+let pendingTask = null;
+let undoStack = []; // {action:'remove', task: {...}}
+
+// ============================================================
+// PROFILE
+// ============================================================
+function loadProfile(){
+  if(profile.name) document.getElementById('p-name').value=profile.name;
+  if(profile.mission) document.getElementById('p-mission').value=profile.mission;
+  if(profile.context) document.getElementById('p-context').value=profile.context;
+  if(profile.goal) document.getElementById('p-goal').value=profile.goal;
+  if(profile.criteria) document.getElementById('p-criteria').value=profile.criteria;
+  if(profile.focus) document.getElementById('p-focus').value=profile.focus;
+  if(profile.key){
+    document.getElementById('p-key').value=profile.key;
+    setKeyStatus(true);
+  }
+}
+function saveProfile(){
+  profile = {
+    name: document.getElementById('p-name').value,
+    mission: document.getElementById('p-mission').value,
+    context: document.getElementById('p-context').value,
+    goal: document.getElementById('p-goal').value,
+    criteria: document.getElementById('p-criteria').value,
+    focus: document.getElementById('p-focus').value,
+    key: document.getElementById('p-key').value
+  };
+  localStorage.setItem('kp_profile',JSON.stringify(profile));
+  const msg = document.getElementById('saved-msg');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2000);
+  setKeyStatus(!!profile.key);
+  syncPush();
+  toast('Profile saved');
+}
+function setKeyStatus(ok){
+  document.getElementById('key-dot').className='key-dot'+(ok?' ok':'');
+  document.getElementById('key-label').textContent=ok?'API Key configured':'No API Key';
+}
+
+// ============================================================
+// AI ANALYSIS
+// ============================================================
+const MENTOR_CONTEXT = `
+БАЗА ЗНАНИЙ: Книги, менторы, интервью. Ссылайся на конкретные имена и принципы когда они релевантны задаче.
+
+=== МЕНТОРЫ ИЗ ИНТЕРВЬЮ SCHOOL OF HARD KNOCKS ===
+(YouTube-канал, 22M+ подписчиков — реальные интервью с предпринимателями)
+
+- Артур Бланк (Home Depot, Atlanta Falcons, $7B+, интервью SHK): «Commitment to behavior, staying the course, having resilience, listening and responding.» Финансовая награда — ПОБОЧНЫЙ ЭФФЕКТ правильных ценностей, не наоборот. В 83 года продолжает активно работать.
+
+- Джесси Итцлер (построил и продал 5 компаний, продал бизнес Баффету, интервью SHK): «Put more on your plate of what you love to do with the people you love to do it with.» Верь в конец своей истории даже через провалы. Ищи голодных людей — голод важнее таланта.
+
+- Дана Уайт (CEO UFC, $500M+, интервью SHK): «Когда был молодым — если не получится, всегда мог вернуться на прежнюю работу. Бери риски пока молодой.» Зашёл в провальную MMA-компанию и превратил её в многомиллиардный бизнес. «Люди всегда говорят 'это не сработает'. Войди и сломай правила — то что было 100 лет не значит что нельзя изменить.»
+
+- Роберт Херджавек (Shark Tank, $500M+, иммигрант из Хорватии, интервью SHK): «When someone says no to you, what they mean is try harder.» «No does not mean no. It just means not yet.» Принцип ежа из Коллинза: фокус на том что умеешь, нанимай людей умнее тебя на остальное. «My whole life is about hiring smarter people than me. That's the whole deal.»
+
+- Уилл Смит ($350M, интервью SHK): «Taking advice from somebody who hasn't done what you want to do is almost insanity. Listening to people who haven't done the thing that you want to do — that makes you crazy.» «There's an amount of money that once you pass it, it buys misery.»
+
+- Рид Хоффман (LinkedIn, продал Microsoft за $26B, интервью SHK): «More than two-thirds of my smart friends thought I was going to be a complete failure with LinkedIn.» «You burn the boats early. You don't get confidence and then burn the boats. You go.» «Take a risk that other people won't take that might fail — but if you win, you win huge. And make sure you can play again.»
+
+- Основательница Essence Magazine (89 лет, основала журнал в 1970, интервью SHK Beverly Hills): «Scared money does not make money. Don't wait too long. Start now — because you're already getting old.» Машина Rolls-Royce за $515K — коллекционирует автомобили в 89 лет.
+
+- Безымянный миллиардер (интервью SHK): «Become the best in the world at one thing — then you get to do many other things. But mastery is what your obsession should be.» Диверсификация важна, но люди которые создали больше всего богатства были laser focused.
+
+- Безымянный предприниматель (интервью SHK): «The greatest form of tragedy is being successful at everything that doesn't matter.» Наследство — это что ты оставляешь людям. Наследие — это что ты оставляешь В людях.
+
+- Женщина-предприниматель Joy (адвокат, интервью SHK): «You cannot sell a dream looking like a nightmare. Invest in yourself.» Как бизнес-лидер ты представляешь бренд — показывайся для себя.
+
+
+=== МЫШЛЕНИЕ И ФИЛОСОФИЯ ===
+- Георгий Щедровицкий (Оргуправленческое мышление): Системное мышление — основа управления. Разделяй деятельность, мышление и коммуникацию. Методология важнее отдельных техник.
+- Марк Аврелий (Размышления): Контролируй только то что в твоей власти. Действуй по долгу, не по настроению. Дисциплина — основа свободы.
+- Наполеон Хилл (Думай и богатей): Определённость цели — первый шаг к богатству. Подсознание работает на тебя только с чёткой целью. Mastermind — сила группы.
+- Максвелл Мальц (Психокибернетика): Самообраз определяет результат. Визуализация меняет нейронные связи. Ты действуешь в соответствии с тем кем себя считаешь.
+- Кэрол Дуэк (Mindset): Установка на рост против фиксированной установки. Провал — это данные, не приговор.
+- Райан Холидей (Дисциплина — это судьба): Самоконтроль — основа всего остального. Стоическая дисциплина создаёт свободу.
+- Адам Грант (Скрытый потенциал): Потенциал раскрывается через системы и среду, а не только через врождённый талант.
+- Дэвид Гоггинс (Не сломаешь): Ты используешь 40% возможностей. Разум сдаётся раньше тела. Принимай дискомфорт как рост.
+- Мел Роббинс (Теория Let Them): Отпусти чужие реакции. Фокус на своих действиях.
+
+=== ПРИВЫЧКИ И ПРОДУКТИВНОСТЬ ===
+- Джеймс Клир (Атомные привычки): Система важнее целей. 1% улучшений ежедневно. Идентичность — основа привычки. «Ты не достигаешь целей — ты опускаешься до уровня систем.»
+- Стивен Кови (7 навыков): Q2 — золотая зона. Начинай с конечной цели. Сначала понять — потом быть понятым. Синергия.
+- Робин Шарма (Клуб 5 утра): Первый час утра определяет день. 20/20/20 — движение, рефлексия, обучение.
+- Кал Ньюпорт (Глубокая работа): Поверхностная работа — враг. Блоки глубокой концентрации создают мастерство. Социальные сети — разрушители фокуса.
+- Тимоти Феррисс (4-часовая рабочая неделя): Делегируй, автоматизируй, устраняй. 80/20 применяй жёстко. Создавай системы не рабочие места.
+- Али Абдал (Feel-Good Productivity): Продуктивность через удовольствие, а не через силу. Энергия важнее времени.
+- Джим Мёрфи (Внутреннее превосходство): Чемпионская психология. Внутреннее состояние определяет внешние результаты.
+- Гей Хендрикс (Год большого прыжка): Верхний предел — внутренний саботаж успеха. Находи свою зону гения.
+
+=== БИЗНЕС И СТРАТЕГИЯ ===
+- Рэй Далио (Принципы): Радикальная прозрачность. Боль + рефлексия = прогресс. Систематизируй всё. Меритократия идей.
+- Рэй Далио (Меняющийся мировой порядок): Циклы империй. Диверсификация как защита. Смотри на большие паттерны.
+- Питер Тиль (От нуля к единице): Монополия лучше конкуренции. Создавай что-то принципиально новое. «Конкуренция — для проигравших.»
+- Джим Коллинз (От хорошего к великому): Сначала кто, потом что. Маховик — медленный старт, потом неостановимый импульс. Дисциплинированные люди + дисциплинированное мышление.
+- Джим Коллинз (Построенные навсегда): Основная идеология + стремление к прогрессу. БХАГ — большая дерзкая цель.
+- Чан Ким / Рене Моборн (Голубой океан): Не конкурируй — создавай новое пространство. Делай конкуренцию неактуальной.
+- Патрик Бет-Давид (Следующие пять ходов): Думай как шахматист. Знай своих конкурентов и себя. Пять ходов вперёд.
+- Эрик Рис (Бережливый стартап): Быстрая проверка гипотез. MVP — минимальный продукт. Пивот на основе данных.
+- Майкл Гербер (Миф предпринимателя): Работай НАД бизнесом, не В нём. Систематизируй как франшизу. Предприниматель vs менеджер vs специалист.
+- Бен Хоровиц (Сложные вещи о сложных вещах): Нет формулы для трудных решений. Будь честен с командой. Кризис — часть пути.
+- Эндрю Гроув (Высокоэффективный менеджмент): Выход = производительность × рычаги. Один-на-один — главный инструмент. Leverage — ключ управления.
+- Говард Шульц (Вперёд. Starbucks): Бренд строится на эмоциональной связи. Компромисс с ценностями — начало конца.
+- Жино Викман (Traction): EOS-система. Видение + тяга = рост. Правильные люди на правильных местах.
+- Майк Микалович (Profit First): Сначала прибыль — потом расходы. Меняй систему учёта. Деньги в банке — иллюзия прибыли.
+- Нейт Сильвер (На грани): Управляй рисками осознанно. Различай удачу и мастерство. Думай вероятностями.
+- А.Г. Лафли / Роджер Мартин (Играй чтобы выиграть): Стратегия — это выборы. Где играть + как выиграть. Каскад выборов.
+- Ник Хабер (Потный стартап): Скучный бизнес приносит деньги. Не гонись за хайпом. Маржа важнее выручки.
+- Тони Фаделл (Создавай): Детали создают продукт. Первый принцип важнее традиции. Строй команду нанимая лучших.
+- Томми Мелло (Elevate): Бизнес где побеждают все. Культура = результаты.
+- Джеймс Кейс (Образование — это свобода): Обучение — единственная защита от перемен. Знания — капитал который не отнять.
+
+=== ПРОДАЖИ И ПЕРЕГОВОРЫ ===
+- Алекс Хормози ($100M Предложений): Решай дорогие проблемы. Предложение настолько хорошее что глупо отказаться. Ценность > цена.
+- Грант Кардон (Продай или продадут тебе): Всё — продажа. Отказ — часть процесса. 10X правило.
+- Брайан Трейси (Психология продаж): Уверенность продаёт. Знай клиента лучше него самого. Профессиональные продавцы учатся постоянно.
+- Зиг Зиглар (Секреты заключения сделок): Помогай людям получать то что они хотят — получишь своё. Энтузиазм заразителен.
+- Джеффри Гитомер (Маленькая красная книга продаж): Люди покупают у тех кто им нравится. Строй отношения прежде сделок.
+- Джордан Белфорт (Путь волка): Прямолинейная система продаж. Управляй состоянием. Уверенность — это навык.
+- Крис Восс (Никогда не иди на компромисс): Эмпатическое слушание. «Нет» — начало переговоров. Тактическое сочувствие.
+- Гэвин Кеннеди (Договориться можно обо всём): Никогда не уступай просто так. Каждая уступка должна иметь цену. Переговоры — обмен, не сдача.
+- Дональд Трамп (Искусство сделки): Мысли масштабно. Создавай рычаги. Просчитывай худший сценарий. Создавай шум.
+- Роберт Чалдини (Влияние): 6 принципов убеждения: взаимность, последовательность, социальное доказательство, авторитет, симпатия, дефицит.
+- Лейл Лаундс (Как говорить с кем угодно): 92 техники коммуникации. Первое впечатление — навсегда. Язык тела говорит больше слов.
+- Дейл Карнеги (Как завоёвывать друзей): Искренний интерес к людям. Улыбка + имя = расположение. Не критикуй — задавай вопросы.
+- Дрю Уитман (Cashvertising): 8 биологических желаний покупателя. Триггеры покупки. Психология рекламы.
+
+=== МАРКЕТИНГ И КОНТЕНТ ===
+- Гари Вайнерчук (Jab, Jab, Right Hook): Давай ценность 3 раза — потом проси. Контент под платформу. Социальные сети — внимание.
+- Гари Вайнерчук (Crushing It!): Личный бренд — новая валюта. Документируй а не создавай. Последовательность важнее вирусности.
+- Рассел Брансон (Dotcom Secrets): Воронки продаж. Value ladder. Привлекай мечтательного клиента.
+- Рассел Брансон (Expert Secrets): Стань экспертом в своей нише. Движение важнее продукта. Твоя история — твой маркетинг.
+- Дэвид Огилви (Огилви о рекламе): Реклама — продажа в печати. Исследуй клиента. Заголовок — 80% успеха.
+- Коди Санчез (Миллионер с Мейн-стрит): Скучный бизнес + хороший маркетинг = деньги. Покупай существующее, а не строй с нуля.
+
+=== ФИНАНСЫ И ИНВЕСТИЦИИ ===
+- Кийосаки (Богатый папа, бедный папа): Активы производят доход. Покупай активы — не пассивы. Финансовая грамотность = свобода.
+- Тони Роббинс (Money): 7 шагов к финансовой свободе. Диверсификация. Деньги — инструмент а не цель.
+- Джордж Клейсон (Богатейший человек Вавилона): Плати сначала себе (10%). Заставь деньги работать. Защищай капитал от потерь.
+- Бенджамин Грэм (Разумный инвестор): Margin of safety. Инвестируй в ценность а не в хайп. Эмоции — враг инвестора.
+- Морган Хаусел (Психология денег): Долгосрочное мышление. Достаточность важнее максимума. Поведение важнее знаний.
+- Майкл Льюис (Большая короткая): Системы ломаются. Думай независимо. Большинство ошибается одновременно.
+- Брайан Трейси (Достижение максимум): Ешь лягушку с утра — самая сложная задача первой. Письменные цели ускоряют результат в 10 раз. Закон трёх: три главных задачи создают 90% ценности твоей работы.
+- Брайан Трейси (Оставьте брезгливость, съешьте лягушку): Никогда не откладывай главное. Планируй вечером — действуй утром. Фокус на одной задаче до завершения.
+- Пейс Морби (Богатство без кэша): Творческое финансирование. Используй чужие ресурсы. Недвижимость без капитала.
+- Бодо Шефер (Законы победителей): 10 законов успеха. Ответственность за свою жизнь. Ментор ускоряет путь.
+- Бодо Шефер (Путь к финансовой свободе): Финансовый план на 7 лет. Инвестируй автоматически. Деньги любят порядок.
+- Т. Харв Экер (Секреты мышления миллионера): Финансовый термостат. Деньги — отражение мышления. Меняй убеждения о деньгах.
+
+=== ЛИДЕРСТВО И МАСШТАБ ===
+- Роберт Грин (48 законов власти): Власть через информацию. Никогда не затмевай господина. Действуй через интерес других.
+- Малкольм Гладуэлл (Гении и аутсайдеры): 10 000 часов. Контекст создаёт гения. Удача + подготовка = успех.
+- Фил Найт (Shoe Dog / Nike): Верь в продукт до конца. Находи союзников. Кризис — нормально если ты строишь великое.
+- Стив Джобс (Айзексон): Фокус на продукте. Перфекционизм как стандарт. Соединяй точки только оглядываясь назад.
+- Адмирал Макрейвен (Преодоление кризиса): 10 уроков из Navy SEAL. Маленькие победы создают импульс. Начни с заправки кровати.
+- Уилл Пэкер (Кто лучше тебя?): Здоровая самонадеянность. Мечтай без потолка. Ты сам себе наилучший выбор.
+- Маркус Уитни (Создавай и оркеструй): Творческий предприниматель. Оркестрируй ресурсы вокруг видения.
+- Дэвид Маккормик (Кто верил в тебя?): Менторство меняет траекторию. Найди своего ментора — стань ментором для других.
+- Дэвид Огилви: Нанимай людей лучше себя. Стандарты определяют культуру.
+
+=== ЗДОРОВЬЕ ===
+- Михаэль Грегер (Как не умереть): Питание определяет энергию и долголетие. Растительная диета — доказанный путь.
+- Дэвид Гоггинс: Тело — инструмент. Дискомфорт расширяет возможности. Спорт — форма ментальной тренировки.
+`;
+
+async function analyzeTask(){
+  const taskText = document.getElementById('task-input').value.trim();
+  if(!taskText){showError('Write a task first');return;}
+  
+  const key = profile.key || document.getElementById('p-key').value;
+  if(!key){showError('Add your API key in Profile first');return;}
+
+  const btn = document.getElementById('analyze-btn');
+  btn.innerHTML='<div class="spinner"></div> ANALYZING...';
+  btn.disabled=true;
+  document.getElementById('task-error').style.display='none';
+  document.getElementById('ai-result').style.display='none';
+
+  const focusProjects = profile.focus ? profile.focus.trim() : '';
+
+  const systemPrompt = `Ты стратегический AI-советник. Помогаешь художнику расставлять приоритеты задач по матрице Эйзенхауэра и системе Кайдзен.
+
+ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ:
+Имя: ${profile.name||'Alexis'}
+Миссия: ${profile.mission||'Мультидисциплинарный художник, финансовая независимость через творчество'}
+Текущая ситуация: ${profile.context||'Барселона, много направлений, нет стабильного дохода'}
+Цель на 12 месяцев: ${profile.goal||'6000-10000 евро/мес от творчества, PopMart, 2 выставки'}
+Критерии важности: ${profile.criteria||'Приносит деньги в 30 дней, строит арт-бренд, ведёт к PopMart/галереям'}
+
+${focusProjects ? `⚡ ФОКУС-ПРОЕКТЫ (максимум 2 — стратегический выбор пользователя):
+${focusProjects}
+
+КРИТИЧЕСКОЕ ПРАВИЛО ФОКУСА:
+Если задача НЕ относится напрямую к фокус-проектам выше — она автоматически идёт в Q3 или Q4, независимо от её срочности или кажущейся важности. Это осознанный стратегический выбор пользователя. В insight объясни почему задача понижена и как она могла бы поддержать фокус-проект если вообще могла бы.
+Если задача ОТНОСИТСЯ к фокус-проекту — анализируй её по обычным правилам матрицы Эйзенхауэра.
+` : ''}
+${MENTOR_CONTEXT}
+
+ВАЖНО ПРО МЕНТОРОВ: Используй ТОЛЬКО реально задокументированные принципы — из книг, публичных интервью, задокументированных высказываний. Формат строго: "Принцип из [название книги / название интервью / публичного источника]: [сам принцип]". Никакой интерпретации применительно к задаче. Никаких выдуманных слов. Если не знаешь точного задокументированного принципа этого человека — выбери другого ментора из базы у которого есть релевантный реальный принцип. Лучше честно сказать меньше, чем придумать больше.
+
+ВАЖНО: Отвечай ТОЛЬКО валидным JSON объектом. Никакого текста до или после. Никаких markdown блоков. Только { ... }.
+{"quadrant":1,"quadrantLabel":"Срочно и важно","urgency":"High","importance":"High","type":"WANT","typeReason":"одно предложение почему WANT или MUST","area":"business","kanbanCol":"todo","focusMatch":true,"timeSuggestion":{"sessionMin":30,"timesPerWeek":3,"note":"одно предложение — почему именно такой ритм для этой задачи"},"mentors":[{"name":"Имя + точный источник","perspective":"Принцип из [книга/интервью]: [точный реальный принцип без интерпретации и без добавления своих слов]"},{"name":"Имя2 + точный источник","perspective":"Принцип из [источник]: [реальный принцип]"},{"name":"Имя3 + точный источник","perspective":"Принцип из [источник]: [реальный принцип]"}],"insight":"2-3 предложения прямого совета. Обратись по имени. Скажи что делать прямо сейчас."}
+
+focusMatch: true если задача относится к фокус-проекту, false если нет
+Quadrant: 1=срочно+важно, 2=важно+несрочно, 3=срочно+неважно, 4=несрочно+неважно
+Area: personal, family, business, social, hobby
+KanbanCol: backlog, todo, inprogress, waiting
+timeSuggestion: sessionMin = минут за одну сессию (15/20/30/45/60/90/120), timesPerWeek = раз в неделю (1-7)`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2000,
+        system:systemPrompt,
+        messages:[{role:'user',content:`Задача для анализа: "${taskText}"
+
+Уже существующие задачи в системе (для сравнения приоритетов):
+${tasks.filter(t=>t.kanbanCol!=='done').length===0?'Задач пока нет — это первая.':tasks.filter(t=>t.kanbanCol!=='done').map((t,i)=>`${i+1}. [Q${t.quadrant}][${t.type||'?'}][${AREAS[t.area]?.label||t.area}] ${t.text}`).join('\n')}
+
+Завершённые задачи (фактическое время выполнения для калибровки):
+${tasks.filter(t=>t.kanbanCol==='done'&&t.doneAt&&t.createdAt).slice(-10).map(t=>{
+  const days=Math.round((new Date(t.doneAt)-new Date(t.createdAt))/(1000*60*60*24));
+  return `- [Q${t.quadrant}][${AREAS[t.area]?.label||t.area}] "${t.text}" — выполнена за ${days} дн. (план: ${t.timeSuggestion?t.timeSuggestion.sessionMin+'мин × '+t.timeSuggestion.timesPerWeek+'/нед':'-'})`;
+}).join('\n')||'Завершённых задач ещё нет.'}
+
+Учти контекст существующих задач при анализе новой. Если новая задача дублирует существующую — скажи об этом в insight. Если у пользователя уже много Q1 задач — оцени реально ли это новая Q1 или уже Q2.`}]
+      })
+    });
+    const data = await resp.json();
+
+    // Debug: log full response
+    console.log('API Response:', JSON.stringify(data));
+
+    if(data.error) throw new Error('API: ' + (data.error.message||JSON.stringify(data.error)));
+    if(!data.content || !data.content[0]) throw new Error('Пустой ответ. Статус: ' + resp.status + '. Проверь API ключ в Profile.');
+    
+    const text = data.content[0].text.trim();
+    console.log('AI text:', text);
+
+    // Robust JSON extraction
+    const jsonStart = text.indexOf('{');
+    const jsonEnd = text.lastIndexOf('}');
+    if(jsonStart===-1||jsonEnd===-1) throw new Error('Нет JSON в ответе. AI сказал: ' + text.slice(0,200));
+    const clean = text.slice(jsonStart, jsonEnd+1);
+    let result;
+    try { result = JSON.parse(clean); }
+    catch(e){ throw new Error('JSON сломан: ' + e.message + ' | Текст: ' + clean.slice(0,300)); }
+    
+    pendingTask = {
+      id: Date.now(),
+      text: taskText,
+      quadrant: result.quadrant,
+      area: result.area||'business',
+      kanbanCol: result.kanbanCol||'backlog',
+      type: result.type,
+      timeSuggestion: result.timeSuggestion||null,
+      createdAt: new Date().toISOString()
+    };
+
+    const qDef = Q_DEFS[result.quadrant-1];
+    document.getElementById('result-head').textContent = `// Q${result.quadrant} — ${result.quadrantLabel||qDef.label}`;
+    document.getElementById('r-q').innerHTML = `<span class="badge ${qDef.badge}">Q${result.quadrant}</span> ${qDef.label}`;
+    document.getElementById('r-u').textContent = result.urgency;
+    document.getElementById('r-i').textContent = result.importance;
+    document.getElementById('r-t').innerHTML = `<span class="badge ${result.type==='WANT'?'badge-want':'badge-must'}">${result.type}</span> ${result.typeReason||''}`;
+    document.getElementById('r-a').textContent = AREAS[result.area]?.label||result.area;
+    document.getElementById('r-k').textContent = KANBAN_COLS.find(c=>c.id===result.kanbanCol)?.label||result.kanbanCol;
+
+    // Focus match indicator
+    if(focusProjects){
+      const focusRow = document.getElementById('r-focus-row');
+      const focusEl = document.getElementById('r-focus');
+      focusRow.style.display='flex';
+      if(result.focusMatch){
+        focusEl.innerHTML=`<span style="color:var(--teal);font-family:'Space Mono',monospace;font-size:10px">⚡ В фокус-проекте</span>`;
+      } else {
+        focusEl.innerHTML=`<span style="color:var(--text3);font-family:'Space Mono',monospace;font-size:10px">↓ Не в фокусе → Q${result.quadrant}</span>`;
+      }
+    } else {
+      document.getElementById('r-focus-row').style.display='none';
+    }
+
+    // Time suggestion
+    const ts = result.timeSuggestion;
+    const timeEl = document.getElementById('r-time');
+    if(ts && ts.sessionMin && ts.timesPerWeek){
+      const totalMin = ts.sessionMin * ts.timesPerWeek;
+      timeEl.innerHTML = `
+        <div style="background:rgba(78,205,196,.06);border:1px solid var(--teal-dim);border-radius:var(--rs);padding:12px 14px;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--teal);line-height:1">${ts.sessionMin}<span style="font-size:12px;font-family:'Space Mono',monospace;color:var(--teal-dim);margin-left:3px">МИН</span></span>
+            <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--text2)">×</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--teal);line-height:1">${ts.timesPerWeek}<span style="font-size:12px;font-family:'Space Mono',monospace;color:var(--teal-dim);margin-left:3px">РАЗ/НЕД</span></span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--text3)">= ${totalMin} мин/нед</span>
+          </div>
+          ${ts.note?`<div style="font-size:12px;color:var(--text2);font-style:italic;line-height:1.4">${escHtml(ts.note)}</div>`:''}
+        </div>`;
+      timeEl.style.display='block';
+    } else {
+      timeEl.style.display='none';
+    }
+
+    // Render multiple mentors
+    const mentors = result.mentors||[];
+    const mentorColors = ['var(--accent)','var(--teal)','var(--orange)'];
+    document.getElementById('r-mentors').innerHTML = mentors.map((m,i)=>`
+      <div style="border-left:2px solid ${mentorColors[i]};padding:10px 14px;background:rgba(255,255,255,.02);border-radius:0 var(--rs) var(--rs) 0;margin-bottom:8px">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:${mentorColors[i]};margin-bottom:5px;text-transform:uppercase">${escHtml(m.name)}</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.5;font-style:italic">${escHtml(m.perspective)}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('r-insight').textContent = result.insight;
+    document.getElementById('ai-result').style.display='block';
+
+  } catch(e){
+    showError('AI error: '+e.message);
+  } finally {
+    btn.innerHTML='ANALYZE WITH AI';
+    btn.disabled=false;
+  }
+}
+
+function showError(msg){
+  const el=document.getElementById('task-error');
+  el.textContent=msg;
+  el.style.display='block';
+}
+
+function clearAnalysis(){
+  document.getElementById('task-input').value='';
+  document.getElementById('ai-result').style.display='none';
+  document.getElementById('task-error').style.display='none';
+  pendingTask=null;
+}
+
+function addTask(){
+  if(!pendingTask) return;
+  tasks.push(pendingTask);
+  localStorage.setItem('kp_tasks',JSON.stringify(tasks));
+  toast('Task added to system');
+  clearAnalysis();
+  renderMatrix();
+  renderKanban();
+  updateExportCount();
+}
+
+// ============================================================
+// MATRIX
+// ============================================================
+function renderMatrix(){
+  const stats = document.getElementById('matrix-stats');
+  const total = tasks.length;
+  const q1 = tasks.filter(t=>t.quadrant===1).length;
+  const q2 = tasks.filter(t=>t.quadrant===2).length;
+  const done = 0;
+  stats.innerHTML = `
+    <div class="stat"><div class="stat-n">${total}</div><div class="stat-l">Total Tasks</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--red)">${q1}</div><div class="stat-l">Do Now (Q1)</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--teal)">${q2}</div><div class="stat-l">Gold Zone (Q2)</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--text2)">${total-q1-q2}</div><div class="stat-l">Other</div></div>
+  `;
+
+  const grid = document.getElementById('matrix-grid');
+  // Q2 top-left, Q1 top-right, Q4 bottom-left, Q3 bottom-right
+  const layout = [2,1,4,3];
+  grid.innerHTML = layout.map(qn=>{
+    const qDef = Q_DEFS[qn-1];
+    const qTasks = tasks.filter(t=>t.quadrant===qn);
+    return `<div class="quadrant ${qDef.cls}">
+      <div class="q-num">${qn}</div>
+      <div class="q-label">Q${qn}</div>
+      <div class="q-action">${qDef.action}</div>
+      ${qTasks.length===0?`<div class="empty-q">// empty</div>`:
+        qTasks.map(t=>`
+          <div class="task-card" style="border-color:${AREAS[t.area]?.color||'var(--border)'}">
+            <div class="tc-text">${escHtml(t.text)}</div>
+            <div class="tc-meta">
+              <span class="area-dot" style="background:${AREAS[t.area]?.color||'#666'}"></span>
+              <span class="tc-area">${AREAS[t.area]?.label||t.area}</span>
+              <button class="tc-rm" onclick="removeTask(${t.id})">✕</button>
+            </div>
+          </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// KANBAN
+// ============================================================
+function renderKanban(){
+  const stats = document.getElementById('kanban-stats');
+  const total = tasks.length;
+  stats.innerHTML = `
+    <div class="stat"><div class="stat-n">${total}</div><div class="stat-l">All Tasks</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--orange)">${tasks.filter(t=>t.kanbanCol==='todo').length}</div><div class="stat-l">This Week</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--teal)">${tasks.filter(t=>t.kanbanCol==='inprogress').length}</div><div class="stat-l">In Progress</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--text2)">${tasks.filter(t=>t.kanbanCol==='waiting').length}</div><div class="stat-l">Waiting</div></div>
+  `;
+
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = KANBAN_COLS.map(col=>{
+    const colTasks = tasks.filter(t=>t.kanbanCol===col.id);
+    const otherCols = KANBAN_COLS.filter(c=>c.id!==col.id);
+    return `<div class="kcol">
+      <div class="kcol-head">
+        <span>${col.label}</span>
+        <span style="color:var(--text3)">${colTasks.length}</span>
+      </div>
+      <div class="kcol-sub">${col.sub}</div>
+      <div class="kcnt">
+        ${colTasks.length===0?`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// empty</div>`:
+          colTasks.map(t=>{
+            const qDef=Q_DEFS[t.quadrant-1];
+            return `<div class="kcard" style="border-color:${qDef.border}">
+              <div class="kcard-text">${escHtml(t.text)}</div>
+              <div class="kcard-area">
+                <span class="area-dot" style="background:${AREAS[t.area]?.color||'#666'}"></span>
+                ${AREAS[t.area]?.label||t.area} · <span class="badge ${qDef.badge}" style="font-size:7px;padding:1px 5px">Q${t.quadrant}</span>
+                ${t.timeSuggestion?`<span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--teal-dim);margin-left:4px">⏱ ${t.timeSuggestion.sessionMin}м×${t.timeSuggestion.timesPerWeek}/нед</span>`:''}
+              </div>
+              ${col.id==='done'&&t.doneAt&&t.createdAt?`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);margin-top:4px">✓ выполнена за ${Math.max(1,Math.round((new Date(t.doneAt)-new Date(t.createdAt))/(1000*60*60*24)))} дн.</div>`:''}
+              <div class="kcard-moves">
+                ${otherCols.map(c=>`<button class="mv" onclick="moveTask(${t.id},'${c.id}')">${c.label.split(' ')[0]}</button>`).join('')}
+                <button class="mv" style="color:var(--red);border-color:rgba(224,82,82,.3)" onclick="removeTask(${t.id})">✕</button>
+              </div>
+            </div>`;
+          }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function moveTask(id,col){
+  const t=tasks.find(t=>t.id===id);
+  if(t){
+    t.kanbanCol=col;
+    if(col==='done' && !t.doneAt) t.doneAt=new Date().toISOString();
+    if(col!=='done') t.doneAt=null;
+    saveTasks();renderKanban();
+  }
+}
+function removeTask(id){
+  const t = tasks.find(t=>t.id===id);
+  if(!t) return;
+  undoStack.push({action:'remove', task: JSON.parse(JSON.stringify(t))});
+  if(undoStack.length>10) undoStack.shift(); // keep last 10
+  tasks=tasks.filter(t=>t.id!==id);
+  saveTasks();renderMatrix();renderKanban();renderToday();
+  updateExportCount();
+  toastUndo('Задача удалена');
+}
+
+const FIREBASE_URL = 'https://priorityandfocus-default-rtdb.europe-west1.firebasedatabase.app';
+
+// ============================================================
+// FIREBASE SYNC
+// ============================================================
+function getSyncCode(){
+  return localStorage.getItem('kp_sync_code') || '';
+}
+function setSyncCode(code){
+  localStorage.setItem('kp_sync_code', code.trim());
+}
+function generateSyncCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for(let i=0;i<4;i++){
+    for(let j=0;j<4;j++) code += chars[Math.floor(Math.random()*chars.length)];
+    if(i<3) code += '-';
+  }
+  return code;
+}
+
+async function firebasePut(path, data){
+  const code = getSyncCode();
+  if(!code) return;
+  try {
+    await fetch(`${FIREBASE_URL}/users/${code}/${path}.json`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e){ console.warn('Sync error:', e); }
+}
+
+async function firebaseGet(path){
+  const code = getSyncCode();
+  if(!code) return null;
+  try {
+    const resp = await fetch(`${FIREBASE_URL}/users/${code}/${path}.json`);
+    const data = await resp.json();
+    return data;
+  } catch(e){ console.warn('Sync error:', e); return null; }
+}
+
+async function syncPush(){
+  const code = getSyncCode();
+  if(!code) return;
+  await firebasePut('tasks', tasks);
+  await firebasePut('profile', profile);
+  await firebasePut('today', getTodayData());
+  updateSyncStatus('✓ Синхронизировано', 'var(--teal)');
+}
+
+async function syncPull(){
+  const code = getSyncCode();
+  if(!code) return;
+  updateSyncStatus('⟳ Загружаю...', 'var(--text2)');
+  try {
+    const [remoteTasks, remoteProfile, remoteToday] = await Promise.all([
+      firebaseGet('tasks'),
+      firebaseGet('profile'),
+      firebaseGet('today')
+    ]);
+    if(remoteTasks && Array.isArray(remoteTasks)){
+      tasks = remoteTasks;
+      localStorage.setItem('kp_tasks', JSON.stringify(tasks));
+    }
+    if(remoteProfile && typeof remoteProfile === 'object'){
+      profile = remoteProfile;
+      localStorage.setItem('kp_profile', JSON.stringify(profile));
+      loadProfile();
+    }
+    if(remoteToday && typeof remoteToday === 'object'){
+      saveTodayData(remoteToday);
+    }
+    renderMatrix(); renderKanban(); renderToday(); updateExportCount();
+    updateSyncStatus('✓ Данные загружены', 'var(--teal)');
+  } catch(e){
+    updateSyncStatus('✗ Ошибка соединения', 'var(--red)');
+  }
+}
+
+function updateSyncStatus(msg, color){
+  const el = document.getElementById('sync-status');
+  if(el){ el.textContent = msg; el.style.color = color || 'var(--text2)'; }
+}
+
+// Auto-sync after task changes
+async function saveTasks(){
+  localStorage.setItem('kp_tasks', JSON.stringify(tasks));
+  await syncPush();
+}
+
+function generateAndSetCode(){
+  const code = generateSyncCode();
+  document.getElementById('sync-code-input').value = code;
+  setSyncCode(code);
+  toast('Код создан — запиши его!');
+}
+
+async function activateSync(){
+  const input = document.getElementById('sync-code-input').value.trim().toUpperCase();
+  if(!input || input.length < 4){ toast('Введи Sync Code'); return; }
+  setSyncCode(input);
+  updateSyncStatus('⟳ Подключаюсь...', 'var(--text2)');
+  await syncPull();
+}
+
+function initSync(){
+  const code = getSyncCode();
+  if(code){
+    const el = document.getElementById('sync-code-input');
+    if(el) el.value = code;
+    updateSyncStatus('// код активен: '+code.substring(0,4)+'****', 'var(--teal)');
+  }
+}
+
+let pdProjectsText = '';
+let pdFocusResult = '';
+
+function pdReset(){
+  document.getElementById('pd-step1').style.display='block';
+  document.getElementById('pd-step2').style.display='none';
+  document.getElementById('pd-step3').style.display='none';
+  document.getElementById('pd-error').style.display='none';
+  pdProjectsText=''; pdFocusResult='';
+}
+
+async function pdStep1(){
+  const projects = document.getElementById('pd-projects').value.trim();
+  if(!projects){document.getElementById('pd-error').textContent='Введи хотя бы один проект';document.getElementById('pd-error').style.display='block';return;}
+  const key = profile.key || document.getElementById('p-key').value;
+  if(!key){document.getElementById('pd-error').textContent='Сначала добавь API ключ выше';document.getElementById('pd-error').style.display='block';return;}
+
+  const btn = document.getElementById('pd-btn1');
+  btn.innerHTML='<div class="spinner" style="border-top-color:#000"></div> АНАЛИЗИРУЮ...';
+  btn.disabled=true;
+  document.getElementById('pd-error').style.display='none';
+  pdProjectsText = projects;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1500,
+        system:`Ты стратегический советник для творческих предпринимателей. Твоя задача — помочь пользователю выбрать 2 главных фокус-проекта из всех его идей.
+
+Контекст пользователя:
+Имя: ${profile.name||'пользователь'}
+Миссия: ${profile.mission||'не указана'}
+Цель на 12 месяцев: ${profile.goal||'не указана'}
+
+${MENTOR_CONTEXT}
+
+ЗАДАЧА: Задай пользователю 3-5 конкретных уточняющих вопроса — по наиболее неясным проектам из его списка. Вопросы должны касаться: потенциального дохода за 12 месяцев, текущего momentum/трекшена (уже есть продажи/контакты?), личной страсти (1-10), времени до первых реальных денег, конкурентного преимущества. Пиши вопросы нумерованным списком. Ссылайся на конкретные названия проектов из списка. Не давай рекомендацию пока — только задавай вопросы.`,
+        messages:[{role:'user',content:`Мои проекты:\n${projects}`}]
+      })
+    });
+    const data = await resp.json();
+    if(data.error) throw new Error(data.error.message);
+    const text = data.content[0].text;
+    document.getElementById('pd-questions').textContent = text;
+    document.getElementById('pd-step1').style.display='none';
+    document.getElementById('pd-step2').style.display='block';
+  } catch(e){
+    document.getElementById('pd-error').textContent='Ошибка: '+e.message;
+    document.getElementById('pd-error').style.display='block';
+  } finally {
+    btn.innerHTML='АНАЛИЗИРОВАТЬ ПРОЕКТЫ';
+    btn.disabled=false;
+  }
+}
+
+async function pdStep2(){
+  const answers = document.getElementById('pd-answers').value.trim();
+  if(!answers){toast('Напиши ответы на вопросы');return;}
+  const key = profile.key || document.getElementById('p-key').value;
+  const btn = document.getElementById('pd-btn2');
+  btn.innerHTML='<div class="spinner" style="border-top-color:#000"></div> ДУМАЮ...';
+  btn.disabled=true;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2000,
+        system:`Ты стратегический советник. Дай финальную рекомендацию — какие 2 проекта выбрать как фокус на следующие 6-12 месяцев.
+
+${MENTOR_CONTEXT}
+
+Контекст пользователя:
+Имя: ${profile.name||'пользователь'}
+Цель: ${profile.goal||'не указана'}
+Критерии важности: ${profile.criteria||'не указаны'}
+
+Структура ответа:
+1. Вступление (1-2 предложения с обращением по имени) — почему выбор именно этих двух
+2. ⚡ ФОКУС-ПРОЕКТ #1: [название] — 3-4 предложения с принципами из книг и интервью базы знаний
+3. ⚡ ФОКУС-ПРОЕКТ #2: [название] — аналогично
+4. Остальные проекты: что с ними делать (пауза, поддерживающая роль, вернуться позже)
+5. Последняя строка ОБЯЗАТЕЛЬНО в таком формате: FOCUS: [точное название проекта 1] | [точное название проекта 2]`,
+        messages:[
+          {role:'user',content:`Мои проекты:\n${pdProjectsText}`},
+          {role:'assistant',content:document.getElementById('pd-questions').textContent},
+          {role:'user',content:answers}
+        ]
+      })
+    });
+    const data = await resp.json();
+    if(data.error) throw new Error(data.error.message);
+    const text = data.content[0].text;
+    pdFocusResult = text;
+
+    // Render result
+    const resultEl = document.getElementById('pd-result');
+    resultEl.innerHTML = `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:16px;font-size:13px;color:var(--text);line-height:1.8;white-space:pre-wrap">${escHtml(text)}</div>`;
+
+    document.getElementById('pd-step2').style.display='none';
+    document.getElementById('pd-step3').style.display='block';
+  } catch(e){
+    toast('Ошибка: '+e.message);
+  } finally {
+    btn.innerHTML='ПОЛУЧИТЬ РЕКОМЕНДАЦИЮ';
+    btn.disabled=false;
+  }
+}
+
+function pdApply(){
+  // Extract FOCUS: line from result
+  const match = pdFocusResult.match(/FOCUS:\s*(.+?)(?:\n|$)/i);
+  let focusText = '';
+  if(match){
+    const parts = match[1].split('|').map(s=>s.trim());
+    focusText = parts.map((p,i)=>`${i+1}. ${p}`).join('\n');
+  } else {
+    // Fallback — paste full recommendation as hint
+    focusText = '';
+  }
+  if(focusText){
+    document.getElementById('p-focus').value = focusText;
+    saveProfile();
+    toast('⚡ Фокус-проекты применены и сохранены');
+    // Scroll to focus field
+    document.getElementById('p-focus').scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('p-focus').style.borderColor='var(--accent)';
+    setTimeout(()=>document.getElementById('p-focus').style.borderColor='',2000);
+  } else {
+    toast('Скопируй проекты вручную в поле Фокус-проекты');
+  }
+}
+
+// ============================================================
+// EXPORT
+// ============================================================
+function updateExportCount(){
+  const el = document.getElementById('task-count-export');
+  if(el) el.textContent = tasks.length;
+}
+
+function exportJSON(){
+  if(tasks.length===0){toast('Нет задач для экспорта');return;}
+  const data = JSON.stringify({
+    exportedAt: new Date().toISOString(),
+    profile: {name:profile.name,goal:profile.goal},
+    tasks: tasks
+  }, null, 2);
+  downloadFile('kaizen_backup_'+dateStr()+'.json', data, 'application/json');
+  toast('JSON скачан — '+tasks.length+' задач');
+}
+
+function exportCSV(){
+  if(tasks.length===0){toast('Нет задач для экспорта');return;}
+  const cols = ['Задача','Квадрант','Область','Канбан','Тип','Дата'];
+  const rows = tasks.map(t=>[
+    '"'+t.text.replace(/"/g,'""')+'"',
+    'Q'+t.quadrant,
+    AREAS[t.area]?.label||t.area,
+    KANBAN_COLS.find(c=>c.id===t.kanbanCol)?.label||t.kanbanCol,
+    t.type||'',
+    t.createdAt?t.createdAt.slice(0,10):''
+  ].join(','));
+  downloadFile('kaizen_tasks_'+dateStr()+'.csv', [cols.join(','),...rows].join('\n'), 'text/csv');
+  toast('CSV скачан — '+tasks.length+' задач');
+}
+
+function exportMarkdown(){
+  if(tasks.length===0){toast('Нет задач для экспорта');return;}
+  const lines = ['# KAIZEN PRIORITY — '+new Date().toLocaleDateString('ru-RU'),''];
+  const qLabels = ['Срочно + Важно','Важно, не срочно','Срочно, не важно','Не срочно, не важно'];
+  [1,2,3,4].forEach(q=>{
+    const qt = tasks.filter(t=>t.quadrant===q);
+    if(qt.length===0) return;
+    lines.push('## Q'+q+' — '+qLabels[q-1]);
+    qt.forEach(t=>{
+      const area = AREAS[t.area]?.label||t.area;
+      const col = KANBAN_COLS.find(c=>c.id===t.kanbanCol)?.label||t.kanbanCol;
+      lines.push('- [ ] '+t.text+' `'+area+'` `'+col+'`');
+    });
+    lines.push('');
+  });
+  const md = lines.join('\n');
+  // Copy to clipboard + download
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(md).then(()=>{
+      const el=document.getElementById('export-msg');
+      el.style.display='block';
+      setTimeout(()=>el.style.display='none',2500);
+    });
+  }
+  downloadFile('kaizen_tasks_'+dateStr()+'.md', md, 'text/markdown');
+  toast('Markdown скачан + скопирован');
+}
+
+function downloadFile(filename, content, type){
+  const blob = new Blob(['\uFEFF'+content], {type: type+';charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function dateStr(){
+  return new Date().toISOString().slice(0,10).replace(/-/g,'');
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function undoLast(){
+  if(undoStack.length===0){toast('Нечего отменять');return;}
+  const entry = undoStack.pop();
+  if(entry.action==='remove'){
+    tasks.push(entry.task);
+    saveTasks();renderMatrix();renderKanban();renderToday();
+    updateExportCount();
+    toast('↩ Задача восстановлена');
+  }
+}
+
+// Cmd+Z / Ctrl+Z
+document.addEventListener('keydown', e=>{
+  if((e.metaKey||e.ctrlKey) && e.key==='z' && !e.shiftKey){
+    // Don't intercept when typing in inputs
+    if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+    e.preventDefault();
+    undoLast();
+  }
+});
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+let _undoToastTimer = null;
+function toastUndo(msg){
+  const el=document.getElementById('toast');
+  el.innerHTML=`${msg} &nbsp;<button onclick="undoLast()" style="background:rgba(0,0,0,.25);border:none;color:#000;font-family:'Space Mono',monospace;font-size:9px;padding:3px 8px;border-radius:2px;cursor:pointer;font-weight:700;letter-spacing:1px">↩ ОТМЕНИТЬ</button>`;
+  el.classList.add('show');
+  if(_undoToastTimer) clearTimeout(_undoToastTimer);
+  _undoToastTimer = setTimeout(()=>el.classList.remove('show'),4000);
+}
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  if(_undoToastTimer) clearTimeout(_undoToastTimer);
+  _undoToastTimer = setTimeout(()=>el.classList.remove('show'),2500);
+}
+function showTab(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='matrix') renderMatrix();
+  if(id==='kanban') renderKanban();
+  if(id==='today') renderToday();
+}
+
+// ============================================================
+// TODAY
+// ============================================================
+function getTodayData(){
+  return JSON.parse(localStorage.getItem('kp_today')||'{"frog":null,"support":[]}');
+}
+function saveTodayData(d){
+  localStorage.setItem('kp_today',JSON.stringify(d));
+}
+
+function setFrog(id){
+  const d = getTodayData();
+  d.frog = d.frog===id ? null : id;
+  // remove from support if was there
+  d.support = d.support.filter(s=>s!==id);
+  saveTodayData(d);
+  renderToday();
+}
+
+function toggleSupport(id){
+  const d = getTodayData();
+  if(d.frog===id){toast('Уже главная лягушка');return;}
+  if(d.support.includes(id)){
+    d.support = d.support.filter(s=>s!==id);
+  } else {
+    if(d.support.length>=2){toast('Макс. 2 поддерживающих задачи');return;}
+    d.support.push(id);
+  }
+  saveTodayData(d);
+  renderToday();
+}
+
+function renderToday(){
+  const d = getTodayData();
+  const qDefs = Q_DEFS;
+
+  // Frog slot
+  const frogEl = document.getElementById('today-frog');
+  if(d.frog){
+    const t = tasks.find(t=>t.id===d.frog);
+    if(t){
+      const qd = qDefs[t.quadrant-1];
+      frogEl.innerHTML = `
+        <div style="background:rgba(232,213,163,.06);border:1px solid rgba(232,213,163,.2);border-radius:var(--rs);padding:12px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <span class="badge ${qd.badge}">Q${t.quadrant}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text2)">${AREAS[t.area]?.label||t.area}</span>
+          </div>
+          <div style="font-size:13px;color:var(--accent);line-height:1.4;font-weight:500">${escHtml(t.text)}</div>
+          <button onclick="setFrog(${t.id})" style="margin-top:10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);background:none;border:none;cursor:pointer;letter-spacing:1px">✕ убрать</button>
+        </div>`;
+    } else {
+      // task was deleted
+      const newd = getTodayData(); newd.frog=null; saveTodayData(newd);
+      frogEl.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:20px 0">// не выбрана</div>`;
+    }
+  } else {
+    frogEl.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// не выбрана</div>`;
+  }
+
+  // Support slot
+  const supEl = document.getElementById('today-support');
+  const supTasks = d.support.map(id=>tasks.find(t=>t.id===id)).filter(Boolean);
+  if(supTasks.length===0){
+    supEl.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// не выбраны</div>`;
+  } else {
+    supEl.innerHTML = supTasks.map(t=>{
+      const qd = qDefs[t.quadrant-1];
+      return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <span class="badge ${qd.badge}">Q${t.quadrant}</span>
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text2)">${AREAS[t.area]?.label||t.area}</span>
+          <button onclick="toggleSupport(${t.id})" style="margin-left:auto;font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);background:none;border:none;cursor:pointer">✕</button>
+        </div>
+        <div style="font-size:12px;color:var(--text);line-height:1.4">${escHtml(t.text)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Pick list
+  const list = document.getElementById('today-pick-list');
+  const empty = document.getElementById('today-empty');
+  const activeTasks = tasks.filter(t=>t.kanbanCol!=='done');
+
+  if(activeTasks.length===0){
+    list.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+
+  // Sort: Q1 first, then Q2, then others
+  const sorted = [...activeTasks].sort((a,b)=>a.quadrant-b.quadrant);
+
+  list.innerHTML = sorted.map(t=>{
+    const qd = qDefs[t.quadrant-1];
+    const isFrog = d.frog===t.id;
+    const isSupport = d.support.includes(t.id);
+    return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:${isFrog?'rgba(232,213,163,.06)':isSupport?'rgba(255,255,255,.03)':'var(--surface2)'};border:1px solid ${isFrog?'rgba(232,213,163,.3)':isSupport?'var(--border2)':'var(--border)'};border-radius:var(--rs);margin-bottom:6px">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
+          <span class="badge ${qd.badge}">Q${t.quadrant}</span>
+          <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3)">${AREAS[t.area]?.label||t.area}</span>
+          ${isFrog?`<span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent);letter-spacing:1px">🐸 ЛЯГУШКА</span>`:''}
+          ${isSupport?`<span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--teal);letter-spacing:1px">✓ В ДЕНЬ</span>`:''}
+        </div>
+        <div style="font-size:12px;color:var(--text);line-height:1.4">${escHtml(t.text)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+        <button onclick="setFrog(${t.id})" class="btn ${isFrog?'btn-primary':'btn-ghost'}" style="font-size:8px;padding:5px 8px;white-space:nowrap">${isFrog?'🐸 убрать':'🐸 Лягушка'}</button>
+        ${!isFrog?`<button onclick="toggleSupport(${t.id})" class="btn ${isSupport?'btn-danger':'btn-ghost'}" style="font-size:8px;padding:5px 8px;white-space:nowrap">${isSupport?'✕ убрать':'+ В день'}</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// MENTOR CHIPS
+// ============================================================
+const ALL_MENTORS = [
+  // Книги (76)
+  'Щедровицкий','Роберт Грин','Марк Аврелий','Дэвид Гоггинс','Гладуэлл',
+  'Карнеги','Кови','Джеймс Клир','Крис Восс','Хормози',
+  'Грант Кардон','Брайан Трейси','Зиг Зиглар','Джефф Гитомер','Джордан Белфорт',
+  'Рэй Далио','Тони Роббинс','Клейсон','Бенджамин Грэм','Кийосаки',
+  'Лафли / Мартин','Джим Коллинз','Чан Ким','Бет-Давид','Наполеон Хилл',
+  'Максвелл Мальц','Дрю Уитман','Рассел Брансон','Эрик Рис','Феррисс',
+  'Томми Мелло','Майкл Гербер','Хаусел','Кэрол Дуэк','Говард Шульц',
+  'Майкл Льюис','Фил Найт','Эндрю Гроув','Стив Джобс','Коди Санчез',
+  'Питер Тиль','Нейт Сильвер','Райан Холидей','Бен Хоровиц','Адам Грант',
+  'Лейл Лаундс','Тони Фаделл','Майк Микалович','Гэй Хендрикс','Майкл Грегер',
+  'Ник Хабер','Макрейвен','Маркус Уитни','Дэвид МакКормик','Т.Х.Экер',
+  'Чалдини','Али Абдал','Сахил Блум','Уилл Пэккер','Пейс Морби',
+  'Робин Шарма','Джим Мёрфи','Мел Роббинс','Кал Ньюпорт','Гино Викман',
+  'Огилви','Гари Ви','Бодо Шефер','Гэвин Кеннеди','Трамп',
+  'Брайан Трейси (Достижение максимум)',
+  // Интервью School of Hard Knocks
+  'Артур Бланк (SHK)','Джесси Итцлер (SHK)','Дана Уайт (SHK)',
+  'Роберт Херджавек (SHK)','Уилл Смит (SHK)','Рид Хоффман (SHK)'
+];
+function renderMentorChips(){
+  const el=document.getElementById('mentor-chips');
+  if(!el) return;
+  const unique=[...new Set(ALL_MENTORS)];
+  el.innerHTML=unique.map(m=>`<span class="mentor-chip">${m}</span>`).join('');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadProfile();
+renderMatrix();
+renderKanban();
+renderMentorChips();
+updateExportCount();
+initSync();
+
+// Pre-fill with Alexis's profile if empty
+if(!profile.name){
+  document.getElementById('p-name').value = 'Alexis';
+  document.getElementById('p-mission').value = 'Я мультидисциплинированный художник. Моя миссия — стать финансово независимым через искусство и сделать своё творчество главным источником дохода. Создать узнаваемый личный бренд художника международного уровня.';
+  document.getElementById('p-context').value = 'Барселона, Испания. Переехал из Украины. Основные проекты: арт-игрушки (Keeori для PopMart), принты (OMG BCN), картины, NFT (SuperRare, Meme Card 6529.io), бренд одежды Metrique, фотография. Нет стабильного дохода. Много направлений одновременно. Нужна фокусировка.';
+  document.getElementById('p-goal').value = 'За 12 месяцев: 6000-10000€/мес от творчества. Войти в PopMart или создать свой бренд игрушек. Провести минимум 2 выставки.';
+  document.getElementById('p-criteria').value = 'Задача важна если: приносит деньги в течение 30 дней, строит мой арт-бренд, ведёт к PopMart/галереям/коллекционерам, даёт творческую свободу и контроль над бизнесом.';
+  document.getElementById('p-focus').value = '1. Keeori → PopMart (арт-игрушки, IP бренд)\n2. Meme Card на 6529.io (активное комьюнити, живые деньги)';
+}
+</script>
+</body>
+</html>
