@@ -376,12 +376,16 @@ small a{color:var(--accent2)}
     <div class="form-group" style="margin-bottom:10px">
       <label>Anthropic API Key</label>
       <input type="password" id="p-key2" placeholder="sk-ant-api03-..." oninput="syncApiKey(this.value)">
-      <small style="color:var(--text3)">Хранится только на этом устройстве. Сохраняется автоматически при вводе.</small>
+      <small style="color:var(--text3)">Хранится только на этом устройстве.</small>
     </div>
+    <button class="btn btn-primary" onclick="saveApiKey()" style="width:100%;justify-content:center;margin-bottom:10px">
+      СОХРАНИТЬ API КЛЮЧ
+    </button>
     <div class="key-status">
       <div class="key-dot" id="key-dot"></div>
       <span class="key-label" id="key-label">Not configured</span>
     </div>
+    <div id="api-saved-msg" style="display:none;text-align:center;margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// КЛЮЧ СОХРАНЁН</div>
   </div>
 
   <!-- SYNC -->
@@ -1748,6 +1752,17 @@ function renderToday(){
   }).join('');
 }
 
+function saveApiKey(){
+  const val = document.getElementById('p-key2').value.trim();
+  if(!val){ toast('Введи API ключ'); return; }
+  localStorage.setItem('kp_api_key', val);
+  profile.key = val;
+  setKeyStatus(true);
+  const msg = document.getElementById('api-saved-msg');
+  if(msg){ msg.style.display='block'; setTimeout(()=>msg.style.display='none', 2000); }
+  toast('API ключ сохранён');
+}
+
 function syncApiKey(val){
   localStorage.setItem('kp_api_key', val);
   profile.key = val;
@@ -1951,6 +1966,15 @@ renderMentorChips();
 renderCustomMentors();
 updateExportCount();
 initSync();
+// Load API key into Settings field after DOM is ready
+setTimeout(()=>{
+  const savedKey = localStorage.getItem('kp_api_key') || profile.key || '';
+  if(savedKey){
+    const k2 = document.getElementById('p-key2');
+    if(k2) k2.value = savedKey;
+    setKeyStatus(true);
+  }
+}, 100);
 
 // Pre-fill with Alexis's profile if empty
 if(!profile.name){
