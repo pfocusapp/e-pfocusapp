@@ -756,7 +756,8 @@ const KANBAN_COLS = [
   {id:'todo',label:'THIS WEEK',sub:'Committed to do'},
   {id:'inprogress',label:'IN PROGRESS',sub:'Ball on my side'},
   {id:'waiting',label:'WAITING',sub:'Ball on their side'},
-  {id:'done',label:'DONE',sub:'Completed ✓'}
+  {id:'done',label:'DONE',sub:'Completed ✓'},
+  {id:'archive',label:'ARCHIVE',sub:'Weekly reset — прошлые недели'}
 ];
 const Q_DEFS = [
   {id:1,label:'Срочно + Важно',action:'Do NOW',border:'var(--q1)',bg:'var(--q1-bg)',cls:'q1-s',badge:'badge-q1'},
@@ -1186,18 +1187,28 @@ function renderKanban(){
   const board = document.getElementById('kanban-board');
   board.innerHTML = KANBAN_COLS.map(col=>{
     const colTasks = tasks.filter(t=>t.kanbanCol===col.id);
-    const otherCols = KANBAN_COLS.filter(c=>c.id!==col.id);
+    // Move buttons - don't show archive in regular moves, keep it clean
+    const moveTargets = KANBAN_COLS.filter(c=>c.id!==col.id && c.id!=='archive');
     return `<div class="kcol">
       <div class="kcol-head">
         <span>${col.label}</span>
         <span style="color:var(--text3)">${colTasks.length}</span>
       </div>
       <div class="kcol-sub">${col.sub}</div>
+      ${col.id==='done'&&colTasks.length>0?`
+        <button onclick="archiveDone()" style="width:100%;margin-bottom:8px;padding:6px 10px;background:rgba(232,213,163,.08);border:1px solid rgba(232,213,163,.2);border-radius:var(--rs);font-family:'Space Mono',monospace;font-size:8px;color:var(--accent);letter-spacing:1px;cursor:pointer">
+          📦 АРХИВИРОВАТЬ ВСЁ (${colTasks.length})
+        </button>`:''}
+      ${col.id==='archive'&&colTasks.length>0?`
+        <button onclick="clearArchive()" style="width:100%;margin-bottom:8px;padding:6px 10px;background:rgba(224,82,82,.06);border:1px solid rgba(224,82,82,.2);border-radius:var(--rs);font-family:'Space Mono',monospace;font-size:8px;color:var(--red,#e05252);letter-spacing:1px;cursor:pointer">
+          🗑 ОЧИСТИТЬ ARCHIVE
+        </button>`:''}
       <div class="kcnt">
         ${colTasks.length===0?`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);text-align:center;padding:20px 0;letter-spacing:1px">// empty</div>`:
           colTasks.map(t=>{
             const qDef=Q_DEFS[t.quadrant-1];
-            return `<div class="kcard" style="border-color:${qDef.border}">
+            const isArchive = col.id==='archive';
+            return `<div class="kcard" style="border-color:${isArchive?'var(--border)':qDef.border};opacity:${isArchive?'0.6':'1'}">
               <div class="kcard-text">${escHtml(t.text)}</div>
               <div class="kcard-area">
                 <span class="area-dot" style="background:${AREAS[t.area]?.color||'#666'}"></span>
@@ -1205,15 +1216,40 @@ function renderKanban(){
                 ${t.timeSuggestion?`<span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--teal-dim);margin-left:4px">⏱ ${t.timeSuggestion.sessionMin}м×${t.timeSuggestion.timesPerWeek}/нед</span>`:''}
               </div>
               ${col.id==='done'&&t.doneAt&&t.createdAt?`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent2);margin-top:4px">✓ выполнена за ${Math.max(1,Math.round((new Date(t.doneAt)-new Date(t.createdAt))/(1000*60*60*24)))} дн.</div>`:''}
+              ${t.archivedAt?`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--text3);margin-top:4px">архив: ${new Date(t.archivedAt).toLocaleDateString('ru-RU')}</div>`:''}
               <div class="kcard-moves">
-                ${otherCols.map(c=>`<button class="mv" onclick="moveTask(${t.id},'${c.id}')">${c.label.split(' ')[0]}</button>`).join('')}
-                <button class="mv" style="color:var(--red);border-color:rgba(224,82,82,.3)" onclick="removeTask(${t.id})">✕</button>
+                ${isArchive
+                  ? `<button class="mv" onclick="moveTask(${t.id},'backlog')">↩ BACKLOG</button>
+                     <button class="mv" style="color:var(--red);border-color:rgba(224,82,82,.3)" onclick="removeTask(${t.id})">✕</button>`
+                  : `${moveTargets.map(c=>`<button class="mv" onclick="moveTask(${t.id},'${c.id}')">${c.label.split(' ')[0]}</button>`).join('')}
+                     <button class="mv" onclick="moveTask(${t.id},'archive')" style="color:var(--text3)">📦</button>
+                     <button class="mv" style="color:var(--red);border-color:rgba(224,82,82,.3)" onclick="removeTask(${t.id})">✕</button>`
+                }
               </div>
             </div>`;
           }).join('')}
       </div>
     </div>`;
   }).join('');
+}
+
+function archiveDone(){
+  const doneTasks = tasks.filter(t=>t.kanbanCol==='done');
+  if(doneTasks.length===0){toast('Done пуст');return;}
+  doneTasks.forEach(t=>{
+    t.kanbanCol='archive';
+    t.archivedAt=new Date().toISOString();
+  });
+  saveTasks();renderKanban();renderToday();updateExportCount();
+  toast('📦 '+doneTasks.length+' задач архивировано');
+}
+
+function clearArchive(){
+  const count = tasks.filter(t=>t.kanbanCol==='archive').length;
+  if(count===0){toast('Archive пуст');return;}
+  tasks=tasks.filter(t=>t.kanbanCol!=='archive');
+  saveTasks();renderKanban();updateExportCount();
+  toast('🗑 Archive очищен ('+count+' задач удалено)');
 }
 
 function moveTask(id,col){
@@ -1806,7 +1842,7 @@ async function handleFileUpload(input){
         errEl.style.display='block'; return;
       }
       const buf = await file.arrayBuffer();
-      const result = await mammoth.extractRawValue({arrayBuffer: buf});
+      const result = await mammoth.extractRawText({arrayBuffer: buf});
       textarea.value = result.value;
       toast('Файл загружен — '+file.name);
     } else if(ext==='pdf'){
