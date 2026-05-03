@@ -1882,18 +1882,22 @@ async function syncPull(){
       firebaseGet('today')
     ]);
 
-    // SAFE MERGE: only overwrite local tasks if remote has MORE tasks
-    // This prevents losing data when Firebase is empty or outdated
-    if(remoteTasks && Array.isArray(remoteTasks) && remoteTasks.length >= tasks.length){
-      tasks = remoteTasks;
+    // SMART MERGE: объединяем локальные и удалённые задачи по уникальному ID
+    // Это решает проблему когда на разных устройствах разные задачи
+    if(remoteTasks && Array.isArray(remoteTasks) && remoteTasks.length > 0){
+      const localMap = {};
+      tasks.forEach(t => { if(t.id) localMap[t.id] = t; });
+      const remoteMap = {};
+      remoteTasks.forEach(t => { if(t.id) remoteMap[t.id] = t; });
+      // Объединяем: локальные + удалённые, удалённые перезаписывают локальные (более свежие)
+      const merged = {...localMap, ...remoteMap};
+      tasks = Object.values(merged).sort((a,b)=>a.id-b.id);
       localStorage.setItem('kp_tasks', JSON.stringify(tasks));
-    } else if(remoteTasks && Array.isArray(remoteTasks) && remoteTasks.length < tasks.length){
-      // Local has more — push local to cloud instead
+      // Отправляем объединённый список обратно в облако
       await firebasePut('tasks', tasks);
-      updateSyncStatus('↑ Локальных задач больше — отправлено в облако', 'var(--orange)');
-      setTimeout(()=>updateSyncStatus('✓ Синхронизировано', 'var(--teal)'), 2000);
-      renderMatrix(); renderKanban(); renderToday(); updateExportCount();
-      return;
+    } else if(tasks.length > 0){
+      // В облаке пусто — отправляем локальные
+      await firebasePut('tasks', tasks);
     }
 
     if(remoteProfile && typeof remoteProfile === 'object'){
@@ -1908,7 +1912,7 @@ async function syncPull(){
       saveTodayData(remoteToday);
     }
     renderMatrix(); renderKanban(); renderToday(); updateExportCount();
-    updateSyncStatus('✓ Синхронизировано', 'var(--teal)');
+    updateSyncStatus('✓ Синхронизировано — '+tasks.length+' задач', 'var(--teal)');
   } catch(e){
     updateSyncStatus('✗ Ошибка соединения', '#ff6b6b');
     console.warn('Sync error:', e);
