@@ -386,6 +386,42 @@ small a{color:var(--accent2)}
       <span class="key-label" id="key-label">Not configured</span>
     </div>
     <div id="api-saved-msg" style="display:none;text-align:center;margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:2px">// КЛЮЧ СОХРАНЁН</div>
+
+    <!-- AI Model Selector -->
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+      <label style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:block">// AI МОДЕЛЬ ДЛЯ АНАЛИЗА</label>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer">
+          <input type="radio" name="ai-model" value="claude-opus-4-7" onchange="saveModel(this.value)" style="margin-top:2px">
+          <div>
+            <div style="font-size:12px;color:var(--text);font-weight:500">Opus 4.7 <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--accent);margin-left:6px">РЕКОМЕНДУЕТСЯ</span></div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Самая умная модель. Глубокий анализ через всю базу знаний. Дороже и медленнее</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer">
+          <input type="radio" name="ai-model" value="claude-opus-4-6" onchange="saveModel(this.value)" style="margin-top:2px">
+          <div>
+            <div style="font-size:12px;color:var(--text);font-weight:500">Opus 4.6</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Стабильная глубокая модель. Хорошо для основного анализа</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer">
+          <input type="radio" name="ai-model" value="claude-sonnet-4-6" onchange="saveModel(this.value)" style="margin-top:2px">
+          <div>
+            <div style="font-size:12px;color:var(--text);font-weight:500">Sonnet 4.6</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Быстрая модель. Для простых задач. Дешевле, но менее глубокий анализ</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer">
+          <input type="radio" name="ai-model" value="claude-haiku-4-5-20251001" onchange="saveModel(this.value)" style="margin-top:2px">
+          <div>
+            <div style="font-size:12px;color:var(--text);font-weight:500">Haiku 4.5</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Самая быстрая. Минимум стоимости. Для очень простых задач</div>
+          </div>
+        </label>
+      </div>
+      <small style="color:var(--text3);display:block;margin-top:8px">Совет: Opus 4.7 для анализа задач (разница в качестве заметна). Sonnet/Haiku — для загрузки файлов в базу знаний.</small>
+    </div>
   </div>
 
   <!-- SYNC -->
@@ -1493,7 +1529,7 @@ ${MENTOR_CONTEXT}${customMentorContext}
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({
-        model:'claude-opus-4-6',
+        model: localStorage.getItem('kp_model') || 'claude-opus-4-7',
         max_tokens:3000,
         system:systemPrompt,
         messages:[{role:'user',content:`Задача для анализа: "${taskText}"
@@ -1673,6 +1709,19 @@ function renderMatrix(){
 // KANBAN
 // ============================================================
 function renderKanban(){
+  // Auto-fix orphan tasks (without valid kanbanCol)
+  const validCols = KANBAN_COLS.map(c=>c.id);
+  let fixed = 0;
+  tasks.forEach(t=>{
+    if(!t.kanbanCol || !validCols.includes(t.kanbanCol)){
+      t.kanbanCol = 'backlog';
+      fixed++;
+    }
+  });
+  if(fixed>0){
+    localStorage.setItem('kp_tasks',JSON.stringify(tasks));
+    syncPush();
+  }
   const stats = document.getElementById('kanban-stats');
   const total = tasks.length;
   stats.innerHTML = `
@@ -2296,6 +2345,11 @@ function renderToday(){
   }).join('');
 }
 
+function saveModel(val){
+  localStorage.setItem('kp_model', val);
+  toast('Модель: '+val.replace('claude-','').replace('-20251001',''));
+}
+
 function saveApiKey(){
   const val = document.getElementById('p-key2').value.trim();
   if(!val){ toast('Введи API ключ'); return; }
@@ -2518,6 +2572,10 @@ setTimeout(()=>{
     if(k2) k2.value = savedKey;
     setKeyStatus(true);
   }
+  // Mark selected AI model
+  const savedModel = localStorage.getItem('kp_model') || 'claude-opus-4-7';
+  const radio = document.querySelector(`input[name="ai-model"][value="${savedModel}"]`);
+  if(radio) radio.checked = true;
 }, 100);
 
 // Pre-fill with Alexis's profile if empty
